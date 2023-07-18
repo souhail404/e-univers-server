@@ -1,0 +1,130 @@
+const mongoose = require('mongoose');
+
+var userSchema = new mongoose.Schema({
+    firt_name:{
+        type:String,
+        required:true,
+    },
+    last_name:{
+        type:String,
+        required:true,
+    },
+    user_name:{
+        type:String,
+        required:true,
+        unique:true,
+        index:true,
+    },
+    email:{
+        type:String,
+        required:true,
+        unique:true,
+    },
+    mobile:{
+        type:String,
+        required:true,
+        unique:true,
+    },
+    password:{
+        type:String,
+        required:true,
+    },
+    addresses:[
+        {
+            country:{
+                type:String,
+                required:true,
+            },
+            city:{
+                type:String,
+                required:true,
+            },
+            zip:{
+                type:Number,
+                required:true,
+            },
+            street:{
+                type:String,
+                required:true,
+            },
+            house_number:{
+                type:Number,
+                required:true,
+            } 
+        }
+    ],
+    role:{
+        type: String,
+        enum: ['customer', 'admin'],
+        default:'customer'
+    },
+    orders:[
+        {
+            items:[
+                {
+                    quantity:{
+                        type:Number,
+                        default:1
+                    },
+                    item_id:{
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref:"Product",
+                    }
+                }
+            ],
+            shipping_address:{
+                    country:{
+                        type:String,
+                        required:true,
+                    },
+                    city:{
+                        type:String,
+                        required:true,
+                    },
+                    zip:{
+                        type:Number,
+                        required:true,
+                    },
+                    street:{
+                        type:String,
+                        required:true,
+                    },
+                    house_number:{
+                        type:Number,
+                        required:true,
+                    } 
+            },
+            order_state:{
+                type:String,
+                enum:['pending','processing','delivered','backorder'], 
+                default:'pending',
+            },
+        }
+    ],
+    cart:[
+        {
+            item:{
+                type: mongoose.Schema.Types.ObjectId,
+                ref:"Product",
+            },
+            quantity:{
+                type:Number,
+                default:1
+            }
+        }
+    ],
+    wishlist:[
+        {
+            item:{
+                type: mongoose.Schema.Types.ObjectId,
+                ref:"Product",
+            }
+        }
+    ],
+}, 
+{
+    timestamps:true,
+});
+
+//Export the model
+module.exports = mongoose.model('User', userSchema);

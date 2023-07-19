@@ -36,13 +36,13 @@ The server will be up and running at `http://localhost:4000`.
 
 ## API Documentation
 
-<h3>Authentication</h3>
+<h2>Authentication</h2>
 
-<p><strong><u>Route:</u></strong> POST /api/user/register</p>
+<p><strong><ins>Route:</ins></strong> POST /api/user/register</p>
 
-<strong><u>Description:</u></strong> Register a new user.
+<strong><ins>Description:</ins></strong> Register a new user.
 
-<strong><u>Request Body:</u></strong>
+<strong><ins>Request Body:</ins></strong>
 <pre>
 {
   "firt_name": "John",
@@ -54,14 +54,14 @@ The server will be up and running at `http://localhost:4000`.
 }
 </pre>
 
-<strong><u>Response:</u></strong> Status 201 - User registered successfully.
+<strong><ins>Response:</ins></strong> Status 201 - User registered successfully.
 <hr/>
 
-<p><strong><u>Route:</u></strong> POST /api/user/login</p>
+<p><strong><ins>Route:</ins></strong> POST /api/user/login</p>
 
-<strong><u>Description:</u></strong> Log in an existing user.
+<strong><ins>Description:</ins></strong> Log in an existing user.
 
-<strong><u>Request Body:</u></strong>
+<strong><ins>Request Body:</ins></strong>
 <pre>
 {
   "email": "john@example.com",
@@ -69,21 +69,21 @@ The server will be up and running at `http://localhost:4000`.
 }
 </pre>
 
-<strong><u>Response:</u></strong> Status 200 - Login successful, returns JWT token.
+<strong><ins>Response:</ins></strong> Status 200 - Login successful, returns JWT token.
 <hr/>
 
-<p><strong><u>Route:</u></strong> GET /api/user/</p>
+<p><strong><ins>Route:</ins></strong> GET /api/user/</p>
 
-<strong><u>Description:</u></strong> Get a list of all users (Admin only).
+<strong><ins>Description:</ins></strong> Get a list of all users (Admin only).
 
-<strong><u>Response:</u></strong> Status 200 - List of all users.
+<strong><ins>Response:</ins></strong> Status 200 - List of all users.
 <hr/>
 
-<p><strong><u>Route:</u></strong> PUT /api/user/:id</p>
+<p><strong><ins>Route:</ins></strong> PUT /api/user/:id</p>
 
-<strong><u>Description:</u></strong> Update user details by user ID (Authenticated users only).
+<strong><ins>Description:</ins></strong> Update user details by user ID (Authenticated users only).
 
-<strong><u>Request Body:</u></strong>
+<strong><ins>Request Body:</ins></strong>
 <pre>
 {
   "firt_name": "John",
@@ -94,23 +94,23 @@ The server will be up and running at `http://localhost:4000`.
 }
 </pre>
 
-<strong><u>Response:</u></strong> Status 200 - User details updated successfully.
+<strong><ins>Response:</ins></strong> Status 200 - User details updated successfully.
 <hr/>
 
-<p><strong><u>Route:</u></strong> DELETE /api/user/:id</p>
+<p><strong><ins>Route:</ins></strong> DELETE /api/user/:id</p>
 
-<strong><u>Description:</u></strong> Delete a user by user ID (Admin only).
+<strong><ins>Description:</ins></strong> Delete a user by user ID (Admin only).
 
-<strong><u>Response:</u></strong> Status 200 - User deleted successfully.
+<strong><ins>Response:</ins></strong> Status 200 - User deleted successfully.
 <hr/>
 
-<h3>User Addresses</h3>
+<h2>User Addresses</h2>
 
-<p><strong><u>Route:</u></strong> POST /api/user/:id/addresses/add</p>
+<p><strong><ins>Route:</ins></strong> POST /api/user/:id/addresses/add</p>
 
-<strong><u>Description:</u></strong> Add a new address for a user (Authenticated users only).
+<strong><ins>Description:</ins></strong> Add a new address for a user (Authenticated users only).
 
-<strong><u>Request Body:</u></strong>
+<strong><ins>Request Body:</ins></strong>
 <pre>
 {
   "country": "Country Name",
@@ -121,35 +121,35 @@ The server will be up and running at `http://localhost:4000`.
 }
 </pre>
 
-<strong><u>Response:</u></strong> Status 201 - Address added successfully.
+<strong><ins>Response:</ins></strong> Status 201 - Address added successfully.
 <hr/>
 
-<p><strong><u>Route:</u></strong> GET /api/user/:id/addresses/</p>
+<p><strong><ins>Route:</ins></strong> GET /api/user/:id/addresses/</p>
 
-<strong><u>Description:</u></strong> Get all addresses for a user (Authenticated users only).
+<strong><ins>Description:</ins></strong> Get all addresses for a user (Authenticated users only).
 
-<strong><u>Response:</u></strong> Status 200 - List of all user addresses.
+<strong><ins>Response:</ins></strong> Status 200 - List of all user addresses.
 <hr/>
 
-<p><strong><u>Route:</u></strong> GET /api/user/:id/addresses/:addressId</p>
+<p><strong><ins>Route:</ins></strong> GET /api/user/:id/addresses/:addressId</p>
 
-<strong><u>Description:</u></strong> Get a specific address for a user (Authenticated users only).
+<strong><ins>Description:</ins></strong> Get a specific address for a user (Authenticated users only).
 
-<strong><u>Response:</u></strong> Status 200 - Address details.
+<strong><ins>Response:</ins></strong> Status 200 - Address details.
 <hr/>
 
-<p><strong><u>Route:</u></strong> DELETE /api/user/:id/addresses/:addressId</p>
+<p><strong><ins>Route:</ins></strong> DELETE /api/user/:id/addresses/:addressId</p>
 
-<strong><u>Description:</u></strong> Delete a specific address for a user (Authenticated users only).
+<strong><ins>Description:</ins></strong> Delete a specific address for a user (Authenticated users only).
 
-<strong><u>Response:</u></strong> Status 200 - Address deleted successfully.
+<strong><ins>Response:</ins></strong> Status 200 - Address deleted successfully.
 <hr/>
 
-<p><strong><u>Route:</u></strong> PUT /api/user/:id/addresses/:addressId</p>
+<p><strong><ins>Route:</ins></strong> PUT /api/user/:id/addresses/:addressId</p>
 
-<strong><u>Description:</u></strong> Update a specific address for a user (Authenticated users only).
+<strong><ins>Description:</ins></strong> Update a specific address for a user (Authenticated users only).
 
-<strong><u>Request Body:</u></strong>
+<strong><ins>Request Body:</ins></strong>
 <pre>
 {
   "country": "New Country Name",
@@ -160,62 +160,62 @@ The server will be up and running at `http://localhost:4000`.
 }
 </pre>
 
-<strong><u>Response:</u></strong> Status 200 - Address updated successfully.
+<strong><ins>Response:</ins></strong> Status 200 - Address updated successfully.
 <hr/>
 
-<h3>Cart</h3>
+<h2>Cart</h2>
 
-<p><strong><u>Route:</u></strong> POST /api/user/cart/add-to-cart/:productId</p>
+<p><strong><ins>Route:</ins></strong> POST /api/user/cart/add-to-cart/:productId</p>
 
-<strong><u>Description:</u></strong> Add an item to the user's cart (Authenticated users only).
+<strong><ins>Description:</ins></strong> Add an item to the user's cart (Authenticated users only).
 
-<strong><u>Response:</u></strong> Status 200 - Item added to cart.
+<strong><ins>Response:</ins></strong> Status 200 - Item added to cart.
 <hr/>
 
-<p><strong><u>Route:</u></strong> DELETE /api/user/cart/remove-from-cart/:productId</p>
+<p><strong><ins>Route:</ins></strong> DELETE /api/user/cart/remove-from-cart/:productId</p>
 
-<strong><u>Description:</u></strong> Remove an item from the user's cart (Authenticated users only).
+<strong><ins>Description:</ins></strong> Remove an item from the user's cart (Authenticated users only).
 
-<strong><u>Response:</u></strong> Status 200 - Item removed from cart.
+<strong><ins>Response:</ins></strong> Status 200 - Item removed from cart.
 <hr/>
 
-<p><strong><u>Route:</u></strong> PATCH /api/user/cart/reduce-cart-item/:productId</p>
+<p><strong><ins>Route:</ins></strong> PATCH /api/user/cart/reduce-cart-item/:productId</p>
 
-<strong><u>Description:</u></strong> Reduce the quantity of an item in the cart (Authenticated users only).
+<strong><ins>Description:</ins></strong> Reduce the quantity of an item in the cart (Authenticated users only).
 
-<strong><u>Response:</u></strong> Status 200 - Item quantity reduced in cart.
+<strong><ins>Response:</ins></strong> Status 200 - Item quantity reduced in cart.
 <hr/>
 
-<p><strong><u>Route:</u></strong> DELETE /api/user/cart/clear-cart</p>
+<p><strong><ins>Route:</ins></strong> DELETE /api/user/cart/clear-cart</p>
 
-<strong><u>Description:</u></strong> Clear the cart (Authenticated users only).
+<strong><ins>Description:</ins></strong> Clear the cart (Authenticated users only).
 
-<strong><u>Response:</u></strong> Status 200 - Cart cleared successfully.
+<strong><ins>Response:</ins></strong> Status 200 - Cart cleared successfully.
 <hr/>
 
-<h3>Wishlist</h3>
+<h2>Wishlist</h2>
 
-<p><strong><u>Route:</u></strong> POST /api/user/wishlist/add/:productId</p>
+<p><strong><ins>Route:</ins></strong> POST /api/user/wishlist/add/:productId</p>
 
-<strong><u>Description:</u></strong> Add an item to the user's wishlist (Authenticated users only).
+<strong><ins>Description:</ins></strong> Add an item to the user's wishlist (Authenticated users only).
 
-<strong><u>Response:</u></strong> Status 200 - Item added to wishlist.
+<strong><ins>Response:</ins></strong> Status 200 - Item added to wishlist.
 <hr/>
 
-<p><strong><u>Route:</u></strong> DELETE /api/user/wishlist/remove/:productId</p>
+<p><strong><ins>Route:</ins></strong> DELETE /api/user/wishlist/remove/:productId</p>
 
-<strong><u>Description:</u></strong> Remove an item from the user's wishlist (Authenticated users only).
+<strong><ins>Description:</ins></strong> Remove an item from the user's wishlist (Authenticated users only).
 
-<strong><u>Response:</u></strong> Status 200 - Item removed from wishlist.
+<strong><ins>Response:</ins></strong> Status 200 - Item removed from wishlist.
 <hr/>
 
-<h3>Orders</h3>
+<h2>Orders</h2>
 
-<p><strong><u>Route:</u></strong> POST /api/user/order/create-order</p>
+<p><strong><ins>Route:</ins></strong> POST /api/user/order/create-order</p>
 
-<strong><u>Description:</u></strong> Create a new order (Authenticated users only).
+<strong><ins>Description:</ins></strong> Create a new order (Authenticated users only).
 
-<strong><u>Request Body:</u></strong>
+<strong><ins>Request Body:</ins></strong>
 <pre>
 {
   "items": [
@@ -232,21 +232,21 @@ The server will be up and running at `http://localhost:4000`.
 }
 </pre>
 
-<strong><u>Response:</u></strong> Status 201 - Order created successfully.
+<strong><ins>Response:</ins></strong> Status 201 - Order created successfully.
 <hr/>
 
-<p><strong><u>Route:</u></strong> PUT /api/user/order/change-order-state/:orderId</p>
+<p><strong><ins>Route:</ins></strong> PUT /api/user/order/change-order-state/:orderId</p>
 
-<strong><u>Description:</u></strong> Change the state of an order (Admin only).
+<strong><ins>Description:</ins></strong> Change the state of an order (Admin only).
 
-<strong><u>Request Body:</u></strong>
+<strong><ins>Request Body:</ins></strong>
 <pre>
 {
   "order_state": "delivered"
 }
 </pre>
 
-<strong><u>Response:</u></strong> Status 200 - Order state updated successfully.
+<strong><ins>Response:</ins></strong> Status 200 - Order state updated successfully.
 
 ## Contributing
 

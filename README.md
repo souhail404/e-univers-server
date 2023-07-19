@@ -36,14 +36,14 @@ The server will be up and running at `http://localhost:4000`.
 
 ## API Documentation
 
-### Authentication
+<h2>Authentication</h2>
 
-**Route**: `POST /api/user/register`
+<h3>Route: POST /api/user/register</h3>
 
-**Description**: Register a new user.
+<p>Description: Register a new user.</p>
 
-**Request Body**:
-```json
+<p>Request Body:</p>
+<pre>
 {
   "firt_name": "John",
   "last_name": "Doe",
@@ -52,39 +52,39 @@ The server will be up and running at `http://localhost:4000`.
   "mobile": "1234567890",
   "password": "secretpassword"
 }
-```
-**Response**:Status 201 - User registered successfully.
-<br/>
-<br/>
-<br/>
-<br/>
-**Route**: `POST /api/user/login`
-**Description**: Log in an existing user.
-**Request Body**:
-```json
+</pre>
+
+<p>Response: Status 201 - User registered successfully.</p>
+
+
+<h3>Route: POST /api/user/login</h3>
+
+<p>Description: Log in an existing user.</p>
+
+<p>Request Body:</p>
+<pre>
 {
   "email": "john@example.com",
   "password": "secretpassword"
 }
-```
-**Response**: Status 200 - Login successful, returns JWT token.
-<br/>
-<br/>
-<br/>
-<br/>
-### User
-  
-**Route**: `GET /api/user/`
-**Description**: Get a list of all users (Admin only).
-**Response**: Status 200 - List of all users.
-<br/>
-<br/>
-<br/>
-<br/>
-**Route**: `PUT /api/user/:id`
-**Description**: Update user details by user ID (Authenticated users only).
-**Request Body**:
-```json
+</pre>
+
+<p>Response: Status 200 - Login successful, returns JWT token.</p>
+
+
+<h3>Route: GET /api/user/</h3>
+
+<p>Description: Get a list of all users (Admin only).</p>
+
+<p>Response: Status 200 - List of all users.</p>
+
+
+<h3>Route: PUT /api/user/:id</h3>
+
+<p>Description: Update user details by user ID (Authenticated users only).</p>
+
+<p>Request Body:</p>
+<pre>
 {
   "firt_name": "John",
   "last_name": "Doe",
@@ -92,23 +92,26 @@ The server will be up and running at `http://localhost:4000`.
   "email": "john@example.com",
   "mobile": "1234567890"
 }
-```
-**Response**: Status 200 - User details updated successfully.
-<br/>
-<br/>
-<br/>
-<br/>
-**Route**: `DELETE /api/user/:id`
-**Description**: Delete a user by user ID (Admin only).
-**Response**: Status 200 - User deleted successfully.
+</pre>
 
-  
-### User Addresses
+<p>Response: Status 200 - User details updated successfully.</p>
 
-**Route**: `POST /api/user/:id/addresses/add`
-**Description**: Add a new address for a user (Authenticated users only).
-**Request Body**:
-```json
+
+<h3>Route: DELETE /api/user/:id</h3>
+
+<p>Description: Delete a user by user ID (Admin only).</p>
+
+<p>Response: Status 200 - User deleted successfully.</p>
+
+
+<h2>User Addresses</h2>
+
+<h3>Route: POST /api/user/:id/addresses/add</h3>
+
+<p>Description: Add a new address for a user (Authenticated users only).</p>
+
+<p>Request Body:</p>
+<pre>
 {
   "country": "Country Name",
   "city": "City Name",
@@ -116,59 +119,78 @@ The server will be up and running at `http://localhost:4000`.
   "street": "Street Name",
   "house_number": 21
 }
-```
-**Response**: Status 201 - Address added successfully.
+</pre>
 
-**Route**: `GET /api/user/:id/addresses/`
-**Description**: Get all addresses for a user (Authenticated users only).
-**Response**: Status 200 - List of all user addresses.
+<p>Response: Status 201 - Address added successfully.</p>
 
-### Products
 
-- `GET /api/products` Get a list of all products.
-- `POST /api/products` Create a new product.
-  - Request Body:
-  ```json
-  {
-    "title": "Product Title",
-    "description": "Product description",
-    "price": 19.99,
-    "stock": 50,
-    "category": "category_id"
-  }
-- `GET /api/products/:productId` Get product details by product ID.
+<h3>Route: GET /api/user/:id/addresses/</h3>
 
-### Categories
+<p>Description: Get all addresses for a user (Authenticated users only).</p>
 
-- `GET /api/categories` Get a list of all categories.
-- `POST /api/categories` Create a new category.
-  - Request Body:
-  ```json
-  {
-    "title": "Category Title",
-    "description": "Category description"
-  }
-- `GET /api/categories/:categoryId` Get category details by category ID.
+<p>Response: Status 200 - List of all user addresses.</p>
 
-### Orders
 
-- `POST /api/orders/:userId/create-order`  Create an order for a user.
-  - Request Body:
-  ```json
-  {
-    "items": [
-        { "item_id": "product_id_1", "quantity": 2 },
-        { "item_id": "product_id_2", "quantity": 1 }
-    ],
-        "shipping_address": "123 Main St, City, Country"
-  }
-  
-- `PATCH /api/orders/change-order-state/:orderId`  Change the order state (admin only).
-  - Request Body:
-  ```json
-  {
-    "order_state": "delivered"
-  }
+<h3>Route: GET /api/user/:id/addresses/:addressId</h3>
+
+<p>Description: Get a specific address for a user (Authenticated users only).</p>
+
+<p>Response: Status 200 - Address details.</p>
+
+
+<h3>Route: DELETE /api/user/:id/addresses/:addressId</h3>
+
+<p>Description: Delete a specific address for a user (Authenticated users only).</p>
+
+<p>Response: Status 200 - Address deleted successfully.</p>
+
+
+<h3>Route: PUT /api/user/:id/addresses/:addressId</h3>
+
+<p>Description: Update a specific address for a user (Authenticated users only).</p>
+
+<p>Request Body:</p>
+<pre>
+{
+  "country": "New Country Name",
+  "city": "New City Name",
+  "zip": 54321,
+  "street": "New Street Name",
+  "house_number": 42
+}
+</pre>
+
+<p>Response: Status 200 - Address updated successfully.</p>
+
+
+<h2>Cart</h2>
+
+<h3>Route: POST /api/user/cart/add-to-cart/:productId</h3>
+
+<p>Description: Add an item to the user's cart (Authenticated users only).</p>
+
+<p>Response: Status 200 - Item added to cart.</p>
+
+
+<h3>Route: DELETE /api/user/cart/remove-from-cart/:productId</h3>
+
+<p>Description: Remove an item from the user's cart (Authenticated users only).</p>
+
+<p>Response: Status 200 - Item removed from cart.</p>
+
+
+<h3>Route: PATCH /api/user/cart/reduce-cart-item/:productId</h3>
+
+<p>Description: Reduce the quantity of an item in the cart (Authenticated users only).</p>
+
+<p>Response: Status 200 - Item quantity reduced in cart.</p>
+
+
+<h3>Route: DELETE /api/user/cart/clear-cart</h3>
+
+<p>Description: Clear the cart (Authenticated users only).</p>
+
+
 
 ## Contributing
 

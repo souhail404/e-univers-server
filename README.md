@@ -70,7 +70,6 @@ The server will be up and running at `http://localhost:4000`.
 </pre>
 
 <strong><ins>Response:</ins></strong> Status 200 - Login successful, returns JWT token.
-<hr/>
 
 <h3>User</h3>
 

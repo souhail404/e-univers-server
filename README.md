@@ -17,14 +17,14 @@ This is the backend server for the e-univers website, which is an E-commerce pla
 
 Before running the project, ensure you have the following installed:
 
-- Node.js (version X.X.X)
-- MongoDB (version X.X.X)
+- Node.js
+- MongoDB
 
 ## Installation
 
 Follow these steps to set up the project locally:
 
-1. Clone the repository from GitHub: `git clone https://github.com/your-username/e-univers-server.git`
+1. Clone the repository from GitHub: `git clone https://github.com/souhail404/e-univers-server.git`
 2. Navigate to the project directory: `cd e-univers-server`
 3. Install the dependencies: `npm install`
 
@@ -32,7 +32,7 @@ Follow these steps to set up the project locally:
 
 To start the server, run: `npm start`
 
-The server will be up and running at `http://localhost:5000`.
+The server will be up and running at `http://localhost:4000`.
 
 ## API Documentation
 

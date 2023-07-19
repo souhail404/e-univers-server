@@ -38,43 +38,80 @@ The server will be up and running at `http://localhost:4000`.
 
 ### Authentication
 
-- `POST /api/auth/register`: Register a new user.
-  - Request Body:
+**Route**: `POST /api/user/register`
+
+**Description**: Register a new user.
+
+**Request Body**:
+```json
+{
+  "firt_name": "John",
+  "last_name": "Doe",
+  "user_name": "johndoe",
+  "email": "john@example.com",
+  "mobile": "1234567890",
+  "password": "secretpassword"
+}
+**Response**:Status 201 - User registered successfully.
+
+
+**Route**: `POST /api/user/login`
+
+**Description**: Log in an existing user.
+
+**Request Body**:
+```json
+{
+  "email": "john@example.com",
+  "password": "secretpassword"
+}
+**Response**: Status 200 - Login successful, returns JWT token.
+
+  
+### User
+
+  **Route**: `GET /api/user/`
+  **Description**: Get a list of all users (Admin only).
+  **Response**: Status 200 - List of all users.
+
+
+  **Route**: `PUT /api/user/:id`
+  **Description**: Update user details by user ID (Authenticated users only).
+  **Request Body**:
   ```json
   {
     "firt_name": "John",
     "last_name": "Doe",
     "user_name": "johndoe",
     "email": "john@example.com",
-    "mobile": "1234567890",
-    "password": "secretpassword"
+    "mobile": "1234567890"
   }
+  **Response**: Status 200 - User details updated successfully.
+
+
+  **Route**: `DELETE /api/user/:id`
+  **Description**: Delete a user by user ID (Admin only).
+  **Response**: Status 200 - User deleted successfully.
 
   
-### Login
+### User Addresses
 
-- `POST /api/auth/login`: Log in an existing user.
-  - Request Body:
-  ```json
-  {
-    "user_name": "John",
-    "password": "secretpassword"
-  }
+**Route**: `POST /api/user/:id/addresses/add`
+**Description**: Add a new address for a user (Authenticated users only).
+**Request Body**:
+```json
+{
+  "country": "Country Name",
+  "city": "City Name",
+  "zip": 12345,
+  "street": "Street Name",
+  "house_number": 21
+}
+**Response**: Status 201 - Address added successfully.
 
-  
-### Users
-
-- `GET /api/users/:userId:` Get user details by user ID.
-- `PATCH /api/users/:userId:` Update user details by user ID.
-  - Request Body:
-  ```json
-  {
-  "firt_name": "John",
-  "last_name": "Doe",
-  "user_name": "johndoe",
-  "email": "john@example.com",
-  "mobile": "1234567890"
-  }
+**Route**: `GET /api/user/:id/addresses/`
+**Description**: Get all addresses for a user (Authenticated users only).
+**Response**: Status 200 - List of all user addresses.
 
 ### Products
 

@@ -1,6 +1,6 @@
 # e-univers-server - An E-commerce Website Server
 
-![e-univers-server Logo](link-to-your-logo.png)
+
 
 This is the backend server for the e-univers website, which is an E-commerce platform that allows users to browse and purchase various products online. The server provides a robust API for managing products, categories, orders, and user data.
 

@@ -56,6 +56,7 @@ The server will be up and running at `http://localhost:4000`.
 
 <strong><u>Response:</u></strong> Status 201 - User registered successfully.
 
+<hr/>
 
 <p><strong><u>Route:</u></strong> POST /api/user/login</p>
 

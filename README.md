@@ -49,6 +49,8 @@ The server will be up and running at `http://localhost:5000`.
     "mobile": "1234567890",
     "password": "secretpassword"
   }
+
+  
 ### Login
 
 - `POST /api/auth/login`: Log in an existing user.
@@ -58,3 +60,19 @@ The server will be up and running at `http://localhost:5000`.
     "user_name": "John",
     "password": "secretpassword"
   }
+
+  
+### Users
+
+- `GET /api/users/:userId: Get user details by user ID.
+- `PATCH /api/users/:userId: Update user details by user ID.
+  - Request Body:
+  ```json
+  {
+  "firt_name": "John",
+  "last_name": "Doe",
+  "user_name": "johndoe",
+  "email": "john@example.com",
+  "mobile": "1234567890"
+}
+

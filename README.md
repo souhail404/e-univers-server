@@ -76,7 +76,7 @@ The server will be up and running at `http://localhost:5000`.
   "mobile": "1234567890"
   }
 
-### Users
+### Products
 
 - `GET /api/products` Get a list of all products.
 - `POST /api/products` Create a new product.
@@ -123,4 +123,12 @@ The server will be up and running at `http://localhost:5000`.
     "order_state": "delivered"
   }
 
+## Contributing
+To contribute to this project, follow these steps:
+
+1-Fork the repository.
+2-Create a new branch for your feature: git checkout -b feature-name
+3-Commit your changes: git commit -m 'Add some feature'
+4-Push to the branch: git push origin feature-name
+5-Submit a pull request.
 

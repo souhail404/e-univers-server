@@ -37,8 +37,7 @@ The server will be up and running at `http://localhost:4000`.
 ## API Documentation
 
 <br>
-<br>
-<h3>-> Authentication</h3>
+<h3>&#x27A0; Authentication</h3>
 
 <p><strong><ins>Route:</ins></strong> POST /api/user/register</p>
 
@@ -75,8 +74,7 @@ The server will be up and running at `http://localhost:4000`.
 <hr/>
 
 <br>
-<br>
-<h3>-> User</h3>
+<h3>&#x27A0; User</h3>
 
 <p><strong><ins>Route:</ins></strong> GET /api/user/</p>
 
@@ -110,8 +108,7 @@ The server will be up and running at `http://localhost:4000`.
 <strong><ins>Response:</ins></strong> Status 200 - User deleted successfully.
 
 <br>
-<br>
-<h3>-> User Addresses</h3>
+<h3>&#x27A0; User Addresses</h3>
 
 <p><strong><ins>Route:</ins></strong> POST /api/user/:id/addresses/add</p>
 
@@ -170,8 +167,7 @@ The server will be up and running at `http://localhost:4000`.
 <strong><ins>Response:</ins></strong> Status 200 - Address updated successfully.
 
 <br>
-<br>
-<h3>-> Cart</h3>
+<h3>&#x27A0; Cart</h3>
 
 <p><strong><ins>Route:</ins></strong> POST /api/user/cart/add-to-cart/:productId</p>
 
@@ -201,8 +197,7 @@ The server will be up and running at `http://localhost:4000`.
 <strong><ins>Response:</ins></strong> Status 200 - Cart cleared successfully.
 
 <br>
-<br>
-<h3>-> Wishlist</h3>
+<h3>&#x27A0; Wishlist</h3>
 
 <p><strong><ins>Route:</ins></strong> POST /api/user/wishlist/add/:productId</p>
 
@@ -218,8 +213,7 @@ The server will be up and running at `http://localhost:4000`.
 <strong><ins>Response:</ins></strong> Status 200 - Item removed from wishlist.
 
 <br>
-<br>
-<h3>-> Orders</h3>
+<h3>&#x27A0; Orders</h3>
 
 <p><strong><ins>Route:</ins></strong> POST /api/user/order/create-order</p>
 

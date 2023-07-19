@@ -246,6 +246,349 @@ The server will be up and running at `http://localhost:4000`.
 
 <strong><ins>Response:</ins></strong> Status 200 - Order state updated successfully.
 
+<h3>---- Product Routes ----</h3>
+
+<p><strong><u>Route:</u></strong> POST /api/product/add</p>
+
+<strong><u>Description:</u></strong> Create a new product (Admin only).
+
+<strong><u>Request Body:</u></strong>
+<pre>
+{
+  "title": "Product Title",
+  "mini_description": "Brief description",
+  "description": "Full description",
+  "stock": 100,
+  "price": 50.99,
+  "discount": 10,
+  "category": "category_id_here"
+}
+</pre>
+
+<strong><u>Response:</u></strong> Status 201 - Product created successfully.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> POST /api/product/generate</p>
+
+<strong><u>Description:</u></strong> Generate mockup products (Admin only).
+
+<strong><u>Response:</u></strong> Status 201 - Mockup products generated successfully.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> GET /api/product/</p>
+
+<strong><u>Description:</u></strong> Get a list of all products.
+
+<strong><u>Response:</u></strong> Status 200 - List of all products.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> GET /api/product/:productId</p>
+
+<strong><u>Description:</u></strong> Get details of a product by product ID.
+
+<strong><u>Response:</u></strong> Status 200 - Details of the product.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> PUT /api/product/:productId</p>
+
+<strong><u>Description:</u></strong> Update product details by product ID (Admin only).
+
+<strong><u>Request Body:</u></strong>
+<pre>
+{
+  "title": "Updated Title",
+  "mini_description": "Updated brief description",
+  "description": "Updated full description",
+  "stock": 50,
+  "price": 40.99,
+  "discount": 5,
+  "category": "category_id_here"
+}
+</pre>
+
+<strong><u>Response:</u></strong> Status 200 - Product details updated successfully.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> DELETE /api/product/:productId</p>
+
+<strong><u>Description:</u></strong> Delete a product by product ID (Admin only).
+
+<strong><u>Response:</u></strong> Status 200 - Product deleted successfully.
+
+
+<h3>---- Variant Routes ----</h3>
+
+<p><strong><u>Route:</u></strong> POST /api/product/:id/variants/add</p>
+
+<strong><u>Description:</u></strong> Add a product variant (Admin only).
+
+<strong><u>Request Body:</u></strong>
+<pre>
+{
+  "name": "Color",
+  "options": [
+    {
+      "option": "Red",
+      "value": "Red",
+      "price_def": -3,
+      "image": "image_id_here",
+      "available": true
+    }
+  ]
+}
+</pre>
+
+<strong><u>Response:</u></strong> Status 201 - Variant added successfully.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> GET /api/product/:id/variants/</p>
+
+<strong><u>Description:</u></strong> Get all variants of a product.
+
+<strong><u>Response:</u></strong> Status 200 - List of all variants.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> DELETE /api/product/:id/variants/:variantId</p>
+
+<strong><u>Description:</u></strong> Delete a product variant by variant ID (Admin only).
+
+<strong><u>Response:</u></strong> Status 200 - Variant deleted successfully.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> PUT /api/product/:id/variants/:variantId</p>
+
+<strong><u>Description:</u></strong> Update a product variant by variant ID (Admin only).
+
+<strong><u>Request Body:</u></strong>
+<pre>
+    {
+      "name": "Updated Color",
+      "options": [
+        {
+          "option": "Blue",
+          "value": "Blue",
+          "price_def": 0,
+          "image": "image_id_here",
+          "available": true
+        }
+      ]
+    }
+</pre>
+
+<strong><u>Response:</u></strong> Status 200 - Variant updated successfully.
+
+<!-- Review Routes -->
+
+<h3>---- Review Routes ----</h3>
+
+<p><strong><u>Route:</u></strong> POST /api/product/:productId/reviews/add</p>
+
+<strong><u>Description:</u></strong> Add a review to a product.
+
+<strong><u>Request Body:</u></strong>
+<pre>
+{
+  "user_id": "user_id_here",
+  "author": "John Doe",
+  "rate": 4,
+  "title": "Great Product",
+  "comment": "I love this product!"
+}
+</pre>
+
+<strong><u>Response:</u></strong> Status 201 - Review added successfully.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> GET /api/product/:productId/reviews/</p>
+
+<strong><u>Description:</u></strong> Get all reviews of a product.
+
+<strong><u>Response:</u></strong> Status 200 - List of all reviews.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> DELETE /api/product/:productId/reviews/:reviewId</p>
+
+<strong><u>Description:</u></strong> Delete a product review by review ID (Admin only).
+
+<strong><u>Response:</u></strong> Status 200 - Review deleted successfully.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> PUT /api/product/:productId/reviews/:reviewId</p>
+
+<strong><u>Description:</u></strong> Update a product review by review ID (Admin only).
+
+<strong><u>Request Body:</u></strong>
+
+<pre>
+{
+  "author": "Updated Author",
+  "rate": 4,
+  "title": "Updated Review Title",
+  "comment": "This is an updated review.",
+  "active": false
+}
+</pre>
+
+<strong><u>Response:</u></strong> Status 200 - Review updated successfully.
+
+
+
+<h3>---- Category Routes ----</h3>
+
+<p><strong><u>Route:</u></strong> POST /api/category/add</p>
+
+<strong><u>Description:</u></strong> Create a new category (Admin only).
+
+<strong><u>Request Body:</u></strong>
+<pre>
+{
+  "title": "Electronics",
+  "description": "Electronics category description"
+}
+</pre>
+
+<strong><u>Response:</u></strong> Status 201 - Category created successfully.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> GET /api/category/</p>
+
+<strong><u>Description:</u></strong> Get all categories.
+
+<strong><u>Response:</u></strong> Status 200 - List of all categories.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> GET /api/category/:categoryId</p>
+
+<strong><u>Description:</u></strong> Get a category by category ID.
+
+<strong><u>Response:</u></strong> Status 200 - Category details.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> PUT /api/category/:categoryId</p>
+
+<strong><u>Description:</u></strong> Update a category by category ID (Admin only).
+
+<strong><u>Request Body:</u></strong>
+
+<pre>
+    {
+      "title": "Updated Electronics",
+      "description": "Updated electronics category description."
+    }
+</pre>
+
+<strong><u>Response:</u></strong> Status 200 - Category updated successfully.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> DELETE /api/category/:categoryId</p>
+
+<strong><u>Description:</u></strong> Delete a category by category ID (Admin only).
+
+<strong><u>Response:</u></strong> Status 200 - Category deleted successfully.
+
+<h3>---- Sub Categories Routes ----</h3>
+
+<p><strong><u>Route:</u></strong> GET /api/category/:categoryId/subcategory</p>
+
+<strong><u>Description:</u></strong> Get all sub-categories for a specific category.
+
+<strong><u>Response:</u></strong> Status 200 - List of sub-categories.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> GET /api/category/:categoryId/subcategory/:subCategoryId</p>
+
+<strong><u>Description:</u></strong> Get a sub-category by sub-category ID.
+
+<strong><u>Response:</u></strong> Status 200 - Sub-category details.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> POST /api/category/:categoryId/addonesubcategory</p>
+
+<strong><u>Description:</u></strong> Add a single sub-category to a specific category (Admin only).
+
+<strong><u>Request Body:</u></strong>
+
+<pre>
+{
+  "title": "Mobile Phones"
+}
+</pre>
+
+<strong><u>Response:</u></strong> Status 201 - Sub-category added successfully.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> POST /api/category/:categoryId/addmanysubcategories</p>
+
+<strong><u>Description:</u></strong> Add multiple sub-categories to a specific category (Admin only).
+
+<strong><u>Request Body:</u></strong>
+
+<pre>
+    {
+      "sub_categories": [
+        {
+          "title": "Laptops"
+        },
+        {
+          "title": "Tablets"
+        },
+        {
+          "title": "Cameras"
+        }
+      ]
+    }
+</pre>
+<strong><u>Response:</u></strong> Status 201 - Sub-categories added successfully.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> DELETE /api/category/:categoryId/deleteallsubcategories</p>
+
+<strong><u>Description:</u></strong> Delete all sub-categories for a specific category (Admin only).
+
+<strong><u>Response:</u></strong> Status 200 - Sub-categories deleted successfully.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> DELETE /api/category/:categoryId/subcategory/:subCategoryId</p>
+
+<strong><u>Description:</u></strong> Delete a sub-category by sub-category ID (Admin only).
+
+<strong><u>Response:</u></strong> Status 200 - Sub-category deleted successfully.
+
+<hr>
+
+<p><strong><u>Route:</u></strong> PUT /api/category/:categoryId/subcategory/:subCategoryId</p>
+
+<strong><u>Description:</u></strong> Update a sub-category by sub-category ID (Admin only).
+
+<strong><u>Request Body:</u></strong>
+
+<pre>
+{
+  "title": "Updated Mobile Phones"
+}
+</pre>
+
+<strong><u>Response:</u></strong> Status 200 - Sub-category updated successfully.
 
 ## Contributing
 

@@ -52,7 +52,7 @@ The server will be up and running at `http://localhost:4000`.
   "mobile": "1234567890",
   "password": "secretpassword"
 }
-"""
+```
 **Response**:Status 201 - User registered successfully.
 
 

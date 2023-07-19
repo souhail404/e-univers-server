@@ -64,8 +64,8 @@ The server will be up and running at `http://localhost:5000`.
   
 ### Users
 
-- `GET /api/users/:userId: Get user details by user ID.
-- `PATCH /api/users/:userId: Update user details by user ID.
+- `GET /api/users/:userId:` Get user details by user ID.
+- `PATCH /api/users/:userId:` Update user details by user ID.
   - Request Body:
   ```json
   {
@@ -74,5 +74,5 @@ The server will be up and running at `http://localhost:5000`.
   "user_name": "johndoe",
   "email": "john@example.com",
   "mobile": "1234567890"
-}
+  }
 

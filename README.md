@@ -49,3 +49,12 @@ The server will be up and running at `http://localhost:5000`.
     "mobile": "1234567890",
     "password": "secretpassword"
   }
+### Login
+
+- `POST /api/auth/login`: Log in an existing user.
+  - Request Body:
+  ```json
+  {
+    "user_name": "John",
+    "password": "secretpassword"
+  }

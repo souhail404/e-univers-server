@@ -36,7 +36,7 @@ The server will be up and running at `http://localhost:4000`.
 
 ## API Documentation
 
-<h2>Authentication</h2>
+<h3>Authentication</h3>
 
 <p><strong><ins>Route:</ins></strong> POST /api/user/register</p>
 
@@ -54,7 +54,7 @@ The server will be up and running at `http://localhost:4000`.
 }
 </pre>
 
-<strong><ins>Response:</ins></strong> Status 201 - User registered successfully.
+<p><strong><ins>Response:</ins></strong></p> Status 201 - User registered successfully.
 <hr/>
 
 <p><strong><ins>Route:</ins></strong> POST /api/user/login</p>
@@ -69,14 +69,14 @@ The server will be up and running at `http://localhost:4000`.
 }
 </pre>
 
-<strong><ins>Response:</ins></strong> Status 200 - Login successful, returns JWT token.
+<p><strong><ins>Response:</ins></strong></p> Status 200 - Login successful, returns JWT token.
 <hr/>
 
 <p><strong><ins>Route:</ins></strong> GET /api/user/</p>
 
 <strong><ins>Description:</ins></strong> Get a list of all users (Admin only).
 
-<strong><ins>Response:</ins></strong> Status 200 - List of all users.
+<p><strong><ins>Response:</ins></strong></p> Status 200 - List of all users.
 <hr/>
 
 <p><strong><ins>Route:</ins></strong> PUT /api/user/:id</p>
@@ -94,17 +94,16 @@ The server will be up and running at `http://localhost:4000`.
 }
 </pre>
 
-<strong><ins>Response:</ins></strong> Status 200 - User details updated successfully.
+<p><strong><ins>Response:</ins></strong></p> Status 200 - User details updated successfully.
 <hr/>
 
 <p><strong><ins>Route:</ins></strong> DELETE /api/user/:id</p>
 
 <strong><ins>Description:</ins></strong> Delete a user by user ID (Admin only).
 
-<strong><ins>Response:</ins></strong> Status 200 - User deleted successfully.
-<hr/>
+<p><strong><ins>Response:</ins></strong></p> Status 200 - User deleted successfully.
 
-<h2>User Addresses</h2>
+<h3>User Addresses</h3>
 
 <p><strong><ins>Route:</ins></strong> POST /api/user/:id/addresses/add</p>
 
@@ -121,28 +120,28 @@ The server will be up and running at `http://localhost:4000`.
 }
 </pre>
 
-<strong><ins>Response:</ins></strong> Status 201 - Address added successfully.
+<p><strong><ins>Response:</ins></strong></p> Status 201 - Address added successfully.
 <hr/>
 
 <p><strong><ins>Route:</ins></strong> GET /api/user/:id/addresses/</p>
 
 <strong><ins>Description:</ins></strong> Get all addresses for a user (Authenticated users only).
 
-<strong><ins>Response:</ins></strong> Status 200 - List of all user addresses.
+<p><strong><ins>Response:</ins></strong></p> Status 200 - List of all user addresses.
 <hr/>
 
 <p><strong><ins>Route:</ins></strong> GET /api/user/:id/addresses/:addressId</p>
 
 <strong><ins>Description:</ins></strong> Get a specific address for a user (Authenticated users only).
 
-<strong><ins>Response:</ins></strong> Status 200 - Address details.
+<p><strong><ins>Response:</ins></strong></p> Status 200 - Address details.
 <hr/>
 
 <p><strong><ins>Route:</ins></strong> DELETE /api/user/:id/addresses/:addressId</p>
 
 <strong><ins>Description:</ins></strong> Delete a specific address for a user (Authenticated users only).
 
-<strong><ins>Response:</ins></strong> Status 200 - Address deleted successfully.
+<p><strong><ins>Response:</ins></strong></p> Status 200 - Address deleted successfully.
 <hr/>
 
 <p><strong><ins>Route:</ins></strong> PUT /api/user/:id/addresses/:addressId</p>
@@ -160,56 +159,53 @@ The server will be up and running at `http://localhost:4000`.
 }
 </pre>
 
-<strong><ins>Response:</ins></strong> Status 200 - Address updated successfully.
-<hr/>
+<p><strong><ins>Response:</ins></strong></p> Status 200 - Address updated successfully.
 
-<h2>Cart</h2>
+<h3>Cart</h3>
 
 <p><strong><ins>Route:</ins></strong> POST /api/user/cart/add-to-cart/:productId</p>
 
 <strong><ins>Description:</ins></strong> Add an item to the user's cart (Authenticated users only).
 
-<strong><ins>Response:</ins></strong> Status 200 - Item added to cart.
+<p><strong><ins>Response:</ins></strong></p> Status 200 - Item added to cart.
 <hr/>
 
 <p><strong><ins>Route:</ins></strong> DELETE /api/user/cart/remove-from-cart/:productId</p>
 
 <strong><ins>Description:</ins></strong> Remove an item from the user's cart (Authenticated users only).
 
-<strong><ins>Response:</ins></strong> Status 200 - Item removed from cart.
+<p><strong><ins>Response:</ins></strong></p> Status 200 - Item removed from cart.
 <hr/>
 
 <p><strong><ins>Route:</ins></strong> PATCH /api/user/cart/reduce-cart-item/:productId</p>
 
 <strong><ins>Description:</ins></strong> Reduce the quantity of an item in the cart (Authenticated users only).
 
-<strong><ins>Response:</ins></strong> Status 200 - Item quantity reduced in cart.
+<p><strong><ins>Response:</ins></strong></p> Status 200 - Item quantity reduced in cart.
 <hr/>
 
 <p><strong><ins>Route:</ins></strong> DELETE /api/user/cart/clear-cart</p>
 
 <strong><ins>Description:</ins></strong> Clear the cart (Authenticated users only).
 
-<strong><ins>Response:</ins></strong> Status 200 - Cart cleared successfully.
-<hr/>
+<p><strong><ins>Response:</ins></strong></p> Status 200 - Cart cleared successfully.
 
-<h2>Wishlist</h2>
+<h3>Wishlist</h3>
 
 <p><strong><ins>Route:</ins></strong> POST /api/user/wishlist/add/:productId</p>
 
 <strong><ins>Description:</ins></strong> Add an item to the user's wishlist (Authenticated users only).
 
-<strong><ins>Response:</ins></strong> Status 200 - Item added to wishlist.
+<p><strong><ins>Response:</ins></strong></p> Status 200 - Item added to wishlist.
 <hr/>
 
 <p><strong><ins>Route:</ins></strong> DELETE /api/user/wishlist/remove/:productId</p>
 
 <strong><ins>Description:</ins></strong> Remove an item from the user's wishlist (Authenticated users only).
 
-<strong><ins>Response:</ins></strong> Status 200 - Item removed from wishlist.
-<hr/>
+<p><strong><ins>Response:</ins></strong></p> Status 200 - Item removed from wishlist.
 
-<h2>Orders</h2>
+<h3>Orders</h3>
 
 <p><strong><ins>Route:</ins></strong> POST /api/user/order/create-order</p>
 
@@ -232,7 +228,7 @@ The server will be up and running at `http://localhost:4000`.
 }
 </pre>
 
-<strong><ins>Response:</ins></strong> Status 201 - Order created successfully.
+<p><strong><ins>Response:</ins></strong></p> Status 201 - Order created successfully.
 <hr/>
 
 <p><strong><ins>Route:</ins></strong> PUT /api/user/order/change-order-state/:orderId</p>
@@ -246,7 +242,7 @@ The server will be up and running at `http://localhost:4000`.
 }
 </pre>
 
-<strong><ins>Response:</ins></strong> Status 200 - Order state updated successfully.
+<p><strong><ins>Response:</ins></strong></p> Status 200 - Order state updated successfully.
 
 ## Contributing
 

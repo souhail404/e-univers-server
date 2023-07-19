@@ -65,6 +65,7 @@ The server will be up and running at `http://localhost:4000`.
   "email": "john@example.com",
   "password": "secretpassword"
 }
+
 **Response**: Status 200 - Login successful, returns JWT token.
 
   

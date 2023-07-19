@@ -58,48 +58,49 @@ The server will be up and running at `http://localhost:4000`.
 <br/>
 <br/>
 <br/>
-<br/>
-<br/>
-<br/>
-<br/>
 **Route**: `POST /api/user/login`
-
 **Description**: Log in an existing user.
-
 **Request Body**:
 ```json
 {
   "email": "john@example.com",
   "password": "secretpassword"
 }
-
+```
 **Response**: Status 200 - Login successful, returns JWT token.
-
-  
+<br/>
+<br/>
+<br/>
+<br/>
 ### User
-
-  **Route**: `GET /api/user/`
-  **Description**: Get a list of all users (Admin only).
-  **Response**: Status 200 - List of all users.
-
-
-  **Route**: `PUT /api/user/:id`
-  **Description**: Update user details by user ID (Authenticated users only).
-  **Request Body**:
-  ```json
-  {
-    "firt_name": "John",
-    "last_name": "Doe",
-    "user_name": "johndoe",
-    "email": "john@example.com",
-    "mobile": "1234567890"
-  }
-  **Response**: Status 200 - User details updated successfully.
-
-
-  **Route**: `DELETE /api/user/:id`
-  **Description**: Delete a user by user ID (Admin only).
-  **Response**: Status 200 - User deleted successfully.
+  
+**Route**: `GET /api/user/`
+**Description**: Get a list of all users (Admin only).
+**Response**: Status 200 - List of all users.
+<br/>
+<br/>
+<br/>
+<br/>
+**Route**: `PUT /api/user/:id`
+**Description**: Update user details by user ID (Authenticated users only).
+**Request Body**:
+```json
+{
+  "firt_name": "John",
+  "last_name": "Doe",
+  "user_name": "johndoe",
+  "email": "john@example.com",
+  "mobile": "1234567890"
+}
+```
+**Response**: Status 200 - User details updated successfully.
+<br/>
+<br/>
+<br/>
+<br/>
+**Route**: `DELETE /api/user/:id`
+**Description**: Delete a user by user ID (Admin only).
+**Response**: Status 200 - User deleted successfully.
 
   
 ### User Addresses
@@ -115,6 +116,7 @@ The server will be up and running at `http://localhost:4000`.
   "street": "Street Name",
   "house_number": 21
 }
+```
 **Response**: Status 201 - Address added successfully.
 
 **Route**: `GET /api/user/:id/addresses/`

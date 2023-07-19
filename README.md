@@ -76,3 +76,51 @@ The server will be up and running at `http://localhost:5000`.
   "mobile": "1234567890"
   }
 
+### Users
+
+- `GET /api/products` Get a list of all products.
+- `POST /api/products` Create a new product.
+  - Request Body:
+  ```json
+  {
+    "title": "Product Title",
+    "description": "Product description",
+    "price": 19.99,
+    "stock": 50,
+    "category": "category_id"
+  }
+- `GET /api/products/:productId` Get product details by product ID.
+
+### Categories
+
+- `GET /api/categories` Get a list of all categories.
+- `POST /api/categories` Create a new category.
+  - Request Body:
+  ```json
+  {
+    "title": "Category Title",
+    "description": "Category description"
+  }
+- `GET /api/categories/:categoryId` Get category details by category ID.
+
+### Orders
+
+- `POST /api/orders/:userId/create-order`  Create an order for a user.
+  - Request Body:
+  ```json
+  {
+    "items": [
+        { "item_id": "product_id_1", "quantity": 2 },
+        { "item_id": "product_id_2", "quantity": 1 }
+    ],
+        "shipping_address": "123 Main St, City, Country"
+  }
+  
+- `PATCH /api/orders/change-order-state/:orderId`  Change the order state (admin only).
+  - Request Body:
+  ```json
+  {
+    "order_state": "delivered"
+  }
+
+

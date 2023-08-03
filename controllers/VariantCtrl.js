@@ -14,7 +14,9 @@ const addProductVariant = asyncHandler(async(req, res)=>{
         }
     
         const newVariant = req.body.variants;
-        product.variants.push(newVariant);
+        newVariant.forEach(variant => {
+          product.variants.push(variant);
+        });
         await product.save();
     
         res.json(newVariant);

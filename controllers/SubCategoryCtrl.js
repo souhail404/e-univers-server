@@ -64,18 +64,23 @@ const updateSubCategory = asyncHandler(async(req, res)=>{
     try {
         const categoryId = req.params.categoryId;
         const subCategoryId = req.params.subCategoryId;
+        const {title} = req.body
+
+        if(!title){
+            return res.status(400).json({ message: 'please send a valid data' });
+        }
 
         const subCategory = await SubCategory.findOneAndUpdate(
-        { _id: subCategoryId, parent: categoryId },
-        req.body,
-        { new: true } 
+            { _id: subCategoryId, parent: categoryId },
+            {title},
+            { new: true } 
         );
 
         if (!subCategory) {
         return res.status(404).json({ message: 'Sub-category not found' });
         }
 
-        res.json(subCategory);
+        res.json({subCategory , title});
     } catch (err) {
         res.status(500).json({ message: 'Server error' });
     }
@@ -85,12 +90,10 @@ const addManySubCategories  = asyncHandler(async(req, res)=>{
     try {
         const categoryId = req.params.categoryId;
         const subCategoriesToAdd = req.body;
-        console.log(subCategoriesToAdd)
         // Prepare an array to hold the newly added sub-categories
         const addedSubCategories = [];
 
         for (const subCat of subCategoriesToAdd) {
-            console.log(subCat);
             const newSubCategory = { ...subCat, parent: categoryId };
             const subCategory = await SubCategory.create(newSubCategory);
             addedSubCategories.push(subCategory);
@@ -104,7 +107,6 @@ const addManySubCategories  = asyncHandler(async(req, res)=>{
 
 const deleteAllSubCategories = asyncHandler(async(req, res)=>{
     try {
-        console.log('here');
         const categoryId = req.params.categoryId;
         
         // Delete all sub-categories associated with the parent category

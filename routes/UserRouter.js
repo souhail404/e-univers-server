@@ -4,7 +4,8 @@ const {
     getUsers,
     loginUser, 
     updateUser, 
-    deleteUser
+    deleteUser,
+    loginAdmin
 } = require('../controllers/UserCtrl');
 
 const {
@@ -41,6 +42,9 @@ router.post('/register', createUser)
 
 // LOGIN USER -ROUTE 
 router.post('/login', loginUser)
+
+// LOGIN ADMIN -ROUTE 
+router.post('/admin-login', loginAdmin)
 
 // GET ALL USERS -ROUTE 
 router.get('/', authMiddleware, isAdmin , getUsers)

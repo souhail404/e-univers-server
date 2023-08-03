@@ -5,18 +5,25 @@ var productSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    mini_description:{
+    slugTitle:{
+        type:String,
+        required:true,
+    },
+    miniDescription:{
         type:String,
     },
     description:{
         type:String,
     },
-    stock:{
-        type:Number,
-    },
-    price:{
+    sellPrice:{
         type:Number,
         required:true
+    },
+    comparePrice:{
+        type:Number,
+    },
+    costPrice:{
+        type:Number,
     },
     discount:{
         type:Number,
@@ -32,8 +39,7 @@ var productSchema = new mongoose.Schema({
     },
     images:[
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref:"ProductImage" 
+            url:String,
         }
     ],
     active:{
@@ -44,13 +50,17 @@ var productSchema = new mongoose.Schema({
         type:Number,
         default:0,
     },
-    added_to_cart:{
+    addedToCart:{
         type:Number,
         default:0,
     },
     ordered:{
         type:Number,
         default:0,
+    },
+    hasVariants:{
+        type:Boolean,
+        default:false,
     },
     variants:[
         {
@@ -60,22 +70,13 @@ var productSchema = new mongoose.Schema({
             },
             options:[
                 {
-                    option:{
-                        type:String,
-                        required:true,
-                    },
                     value:{
                         type:String,
                         required:true,
                     },
-                    price_def:{
+                    priceDef:{
                         type:Number,
-                        required:true,
                         default:0
-                    },
-                    image:{
-                        type: mongoose.Schema.Types.ObjectId,
-                        ref:"ProductImage" 
                     },
                     available:{
                         type:Boolean,
@@ -86,30 +87,30 @@ var productSchema = new mongoose.Schema({
         }
     ],
     reviews:[
-    {
-        user_id:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref:"User" 
-        },
-        author:{
-            type: String,
-            required:true,
-        },
-        rate:{
-            type: Number,
-            required:true,
-        },
-        title:{
-            type: String,
-        },
-        comment:{
-            type: String,
-        },
-        active:{
-            type:Boolean,
-            default:true
+        {
+            userId:{
+                type: mongoose.Schema.Types.ObjectId,
+                ref:"User" 
+            },
+            author:{
+                type: String,
+                required:true,
+            },
+            rate:{
+                type: Number,
+                required:true,
+            },
+            title:{
+                type: String,
+            },
+            comment:{
+                type: String,
+            },
+            active:{
+                type:Boolean,
+                default:true
+            }
         }
-    }
     ]
 }, 
 {
@@ -122,6 +123,10 @@ var productImageSchema = new mongoose.Schema({
         type: String,
         required:true,
     },
+    product:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"Product" 
+    }
 }, 
 {
     timestamps:true,

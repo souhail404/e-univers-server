@@ -37,33 +37,79 @@ const createUser = asyncHandler(async(req, res)=>{
 
 // Login USER
 const loginUser = asyncHandler(async(req, res)=>{
-    // check if already connected
-    if(req.headers.authorization){
-        throw Error('you are already connected, please  !');
-    };
+    try{
+        // check if already connected
+        if(req.headers.authorization){
+            return res.status(404).json({error:'you are already connected, please logout !'});
+        };
 
-    // find the user by email, username or mobile
-    const user_ref = req.body.user_ref;
+        // find the user by email, username or mobile
+        const user_ref = req.body.user_ref;
 
-    const user = await User.findOne({mobile:user_ref}) || 
-                 await User.findOne({user_name:user_ref}) || 
-                 await User.findOne({email:user_ref});
+        const user = await User.findOne({mobile:user_ref}) || 
+                    await User.findOne({user_name:user_ref}) || 
+                    await User.findOne({email:user_ref});
 
-    if(!user){
-        throw Error('User not found');
-    }    
+        if(!user){
+            return res.status(404).json({error:'user not found'});
+        }    
 
-    // check if the password match 
-    if(user.password === req.body.password){
-        res.json({
-            user:user.user_name,
-            email:user.email,
-            token:generateToken(user._id)
-        })
+        // check if the password match 
+        if(user.password === req.body.password){
+            res.json({
+                user:user.user_name,
+                email:user.email,
+                token:generateToken(user._id)
+            })
+        }
+        else{
+            return res.status(404).json({error:'incorrect password'});
+        } 
     }
-    else{
-        throw Error('password incorrect');
-    } 
+    catch(err){
+        return res.status(400).json({msg:'server error', error:err});
+    }
+})
+
+// admin login
+const loginAdmin = asyncHandler(async(req, res)=>{
+    try{
+        // check if already connected
+        if(req.headers.authorization){
+            return res.status(404).json({error:'you are already connected, please logout !'});
+        };
+
+        // find the user by email, username or mobile
+        const user_ref = req.body.user_ref;
+
+        const user = await User.findOne({mobile:user_ref}) || 
+                     await User.findOne({user_name:user_ref}) || 
+                     await User.findOne({email:user_ref});
+
+        if(!user){
+            return res.status(404).json({error:'user not found'});
+        }    
+
+        // check if the password match 
+        if(user.password === req.body.password){
+            if(user.role==='admin'){
+                res.json({
+                    user:user.user_name,
+                    email:user.email,
+                    token:generateToken(user._id)
+                })
+            }
+            else{
+                return res.status(400).json({error:'you are not an admin'});
+            }
+        }
+        else{
+            return res.status(404).json({error:'incorrect password'});
+        } 
+    }
+    catch(err){
+        return res.status(500).json({msg:'server error', error:err});
+    }
 })
 
 // FIND ALL USERS
@@ -114,4 +160,5 @@ module.exports = {
     loginUser, 
     updateUser, 
     deleteUser,
+    loginAdmin
 }

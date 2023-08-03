@@ -25,7 +25,6 @@ const addToCart = asyncHandler(async(req, res)=>{
         
         // Check if the product already exists in the cart
         const existingCartItem = user.cart.find((item) => item.item.toString() === productId.toString());
-        console.log(existingCartItem);
         if (existingCartItem) {
             // Update the quantity of the existing item
             existingCartItem.quantity += quantity;

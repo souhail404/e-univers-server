@@ -18,10 +18,15 @@ const PORT = process.env.PORT || 4000;
 const MONGO_DB = process.env.MONGO_DB;
 
 // middlewares
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
+app.use((err, req, res, next) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    }
+});
 
 // database connection
 mongoose.connect(MONGO_DB)

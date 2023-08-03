@@ -5,8 +5,10 @@ const {
     getProduct, 
     updateProduct, 
     deleteProduct,
-    generate
+    generate,
 } = require('../controllers/ProductCtrl');
+
+const { uploadImage } = require('../controllers/imageCtrl');
 
 const {
     addProductVariant,
@@ -24,10 +26,11 @@ const {
 
 const express = require('express');
 const {authMiddleware, isAdmin} = require('../middlewares/authMiddleware');
+const { uploadPhoto, productImgResize } = require('../middlewares/uploadImages');
 const router = express.Router();
 
 // CRAETE PRODUCT -ROUTE 
-router.post('/add',authMiddleware, isAdmin, createProduct)
+router.post('/add', authMiddleware, isAdmin, uploadPhoto.array('images', 10), productImgResize, createProduct);
 
 // generate -ROUTE 
 router.post('/generate',authMiddleware, isAdmin, generate)
@@ -39,10 +42,13 @@ router.get('/' , getProducts)
 router.get('/:productId' , getProduct)
 
 // UPDATE PRODUCT -ROUTE 
-router.put('/:productId',authMiddleware, isAdmin, updateProduct);
+router.put('/:productId',authMiddleware, isAdmin, uploadPhoto.array('images', 10), productImgResize, updateProduct);
 
 // DELETE PRODUCT -ROUTE 
 router.delete('/:productId',authMiddleware, isAdmin, deleteProduct);
+
+// UPLOAD IMAGES -ROUTE 
+router.post('/images/upload', authMiddleware, isAdmin, uploadPhoto.array('images', 10) , productImgResize, uploadImage)
 
 // VARIANT ----------------------------------------------------
 

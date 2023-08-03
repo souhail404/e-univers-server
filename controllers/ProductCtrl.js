@@ -1,17 +1,34 @@
 // dependencies
 const asyncHandler = require('express-async-handler');
 const faker = require('faker');
+const fs = require('fs')
 
 // models
 const {Product} = require('../models/ProductModel');
+const cloudinaryUploadImg = require('../utils/cloudinary');
 
 // CREATE A PRODUCT 
 const createProduct = asyncHandler(async(req, res)=>{
-    // create the new product
-    const newProduct = await Product.create({...req.body , variants:[], reviews:[]});
+    try{
+        const uploader = (path) => cloudinaryUploadImg(path, 'images')
+        const urls = [];
+        const files = req.files;
+        for(const file of files){
+            const {path} = file;
+            const newPath = await uploader(path);
+            urls.push(newPath);
+            fs.unlinkSync(path);
+        }
 
-    res.json(newProduct);
+        const {title, slug_title, mini_description, description, price, variants} = req.body;
+        const product = await Product.create({...req.body, variants:JSON.parse(variants), images:urls})
+        res.status(200).json(product);
+    } 
+    catch(err){
+        res.status(500).json(err) 
+    }
 });
+
 
 // GET PRODUCTS // FILTERING 
 const getProducts = asyncHandler(async(req, res)=>{
@@ -99,7 +116,7 @@ const getProducts = asyncHandler(async(req, res)=>{
     }
 
     // Execute the query to find products
-    let productsQuery = Product.find(query);
+    let productsQuery = Product.find(query).populate('category');
 
     // Sorting
     const sort = req.query.sort || 'createdAt:desc'  
@@ -158,15 +175,33 @@ const getProduct = asyncHandler(async(req, res)=>{
 // UPDATE PRODUCT 
 const updateProduct = asyncHandler(async(req, res)=>{
     const productId = req.params.productId
-    if(!productId){
-        throw Error('you must pass the product id in the url')
+    try{
+        const uploader = (path) => cloudinaryUploadImg(path, 'images')
+        const newUrls = [];
+        const urls = JSON.parse(req.body.existingImages);
+        const files = req.files;
+        for(const file of files){
+            const {path} = file;
+            const newPath = await uploader(path);
+            newUrls.push(newPath);
+            fs.unlinkSync(path);
+        }
+
+
+        for (let i = 0; i < urls.length; i++) {
+            if (typeof urls[i].url === "number") {
+                urls[i] = newUrls.shift();
+            }
+        }
+            
+        const {title, slugTitle, miniDescription, description, costPrice, variants} = req.body;
+        const product = await Product.findOneAndUpdate({_id:productId}, {...req.body, variants:JSON.parse(variants), images:urls}, {new:true})
+        res.status(200).json(product);
+    } 
+    catch(err){
+        res.status(500).json(err) 
     }
-    // update product
-    const updatedProduct = await Product.findOneAndUpdate({_id:productId} , {...req.body}, {new:true});
-    if(!updatedProduct){
-        throw Error('error while Updating product')
-    }
-    res.json(updatedProduct);  
+    
 });
 
 // DELETE PRODUCT 

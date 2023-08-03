@@ -13,7 +13,6 @@ const addToWishlist = asyncHandler(async (req, res) => {
 
         const user = await User.findById(userId);
         const product = await Product.findById(productId);
-        console.log(product.liked)
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

@@ -7,13 +7,14 @@ const {Category , SubCategory} = require('../models/CategoryModel');
 
 const createCategory = asyncHandler(async(req, res)=>{
     try {
+        if(!req.body.title || !req.body.title){
+            return res.status(500).json({ message: 'Category Title is required'});
+        }
         const {sub_categories} = req.body;
-        const category = await Category.create(req.body);
-        
+        const category = await Category.create({...req.body});
         // if the body contains sub categories create them
         var addedSubCategories = new Array;
         if(sub_categories){
-            console.log('subs exist');
             if(Array.isArray(sub_categories)){
                 for (const subCat of sub_categories){
                     const subCategory = await SubCategory.create({...subCat, parent:category._id});
@@ -25,7 +26,7 @@ const createCategory = asyncHandler(async(req, res)=>{
                 addedSubCategories.push(subCategory)
             }
         }
-        res.status(201).json({category , addedSubCategories});
+        res.status(200).json({category , addedSubCategories});
     } catch (err) {
         res.status(500).json({ message: 'Server error', error:err });
     }
@@ -33,11 +34,48 @@ const createCategory = asyncHandler(async(req, res)=>{
 
 const getAllCategories = asyncHandler(async(req, res)=>{
     try {
-        const categories = await Category.find({});
-        res.json(categories);
+        const {
+            search,
+            page,    
+            pageSize,
+        } = req.query;
+        // build the query
+        const query = {};
+
+        // Keywords/Search filter
+        if (search) {
+            query.$or = [
+                { title: { $regex: search, $options: 'i' } },
+                { description: { $regex: search, $options: 'i' } },
+            ];
+        }
+
+        // Execute the query to find products
+        let categoriesQuery = Category.find(query);
+        
+        // Sorting
+        const sort = req.query.sort 
+        if (sort) {
+            const [sortField, sortOrder] = sort.split(':');
+            const sortOptions = {};
+            sortOptions[sortField] = sortOrder === 'desc' ? -1 : 1;
+            categoriesQuery = categoriesQuery.sort(sortOptions);
+        }
+
+        // Pagination
+        const DEFAULT_PAGE_SIZE = 10;
+        const currentPage = parseInt(page) || 1;
+        const pageSizeValue = parseInt(pageSize) || DEFAULT_PAGE_SIZE;
+        const skipItems = (currentPage - 1) * pageSizeValue;        
+        categoriesQuery = categoriesQuery.skip(skipItems).limit(pageSizeValue);
+
+        const categories = await categoriesQuery.exec();
+        const categoriesCount = await Category.countDocuments(query).exec();
+        const totalPages = Math.ceil(categoriesCount / pageSizeValue);
+        res.status(200).json({categories, categoriesCount, totalPages});
     } catch (err) {
-        res.status(500).json({ message: 'Server error' });
-    }
+        res.status(500).json({ message: 'Server error'});
+    } 
 });
 
 const getCategoryById = asyncHandler(async(req, res)=>{

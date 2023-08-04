@@ -17,12 +17,6 @@ const {
     updateProductVariant
 } = require('../controllers/VariantCtrl');
 
-const {
-    addReview,
-    getProductReviews,
-    deleteReview,
-    updateReview
-} = require('../controllers/ReviewCtrl');
 
 const express = require('express');
 const {authMiddleware, isAdmin} = require('../middlewares/authMiddleware');
@@ -65,18 +59,5 @@ router.delete('/:id/variants/:variantId', authMiddleware, isAdmin , deleteProduc
 router.put('/:id/variants/:variantId', authMiddleware, isAdmin , updateProductVariant)
 
 
-// REVIEW ----------------------------------------------------
-
-// ADD A PRODUCT REVIEW -ROUTE 
-router.post('/:productId/reviews/add', authMiddleware , addReview)
-
-// GET ALL PRODUCT REVIEW -ROUTE 
-router.get('/:productId/reviews/', getProductReviews)
-
-// DELETE A PRODUCT REVIEW -ROUTE 
-router.delete('/:productId/reviews/:reviewId', authMiddleware, deleteReview)
-
-// UPDATE A PRODUCT REVIEW -ROUTE 
-router.put('/:productId/reviews/:reviewId', authMiddleware, updateReview)
 
 module.exports = router;

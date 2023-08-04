@@ -9,6 +9,8 @@ const bodyParser = require('body-parser');
 const UserRouter = require('./routes/UserRouter');
 const CategoryRouter = require('./routes/CategoryRouter');
 const ProductRouter = require('./routes/ProductRouter'); 
+const ReviewRouter = require('./routes/ReviewRouter'); 
+const OrderRouter = require('./routes/OrderRouter'); 
 
 // start the app
 const app = express();
@@ -44,3 +46,5 @@ mongoose.connect(MONGO_DB)
 app.use('/api/user/', UserRouter);
 app.use('/api/category/', CategoryRouter);
 app.use('/api/product/', ProductRouter);
+app.use('/api/review/', ReviewRouter);
+app.use('/api/order/', OrderRouter);

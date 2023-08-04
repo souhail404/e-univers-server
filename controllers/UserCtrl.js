@@ -13,11 +13,11 @@ const createUser = asyncHandler(async(req, res)=>{
 
     // check if email, username or mobile already exists
     const email = req.body.email;
-    const username = req.body.user_name;
+    const username = req.body.userName;
     const mobile = req.body.mobile;
 
     const existEmail = await User.findOne({email:email});
-    const existUsername = await User.findOne({user_name:username});
+    const existUsername = await User.findOne({userName:username});
     const existMobile = await User.findOne({mobile:mobile});
     if(existEmail){
         throw Error('the email you entred already exist !');
@@ -38,17 +38,18 @@ const createUser = asyncHandler(async(req, res)=>{
 // Login USER
 const loginUser = asyncHandler(async(req, res)=>{
     try{
+        console.log(req.body);
         // check if already connected
         if(req.headers.authorization){
             return res.status(404).json({error:'you are already connected, please logout !'});
         };
 
         // find the user by email, username or mobile
-        const user_ref = req.body.user_ref;
+        const userRef = req.body.userRef;
 
-        const user = await User.findOne({mobile:user_ref}) || 
-                    await User.findOne({user_name:user_ref}) || 
-                    await User.findOne({email:user_ref});
+        const user = await User.findOne({mobile:userRef}) || 
+                    await User.findOne({userName:userRef}) || 
+                    await User.findOne({email:userRef});
 
         if(!user){
             return res.status(404).json({error:'user not found'});
@@ -57,7 +58,7 @@ const loginUser = asyncHandler(async(req, res)=>{
         // check if the password match 
         if(user.password === req.body.password){
             res.json({
-                user:user.user_name,
+                user:user.userName,
                 email:user.email,
                 token:generateToken(user._id)
             })

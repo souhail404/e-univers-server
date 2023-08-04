@@ -7,26 +7,27 @@ const {Category , SubCategory} = require('../models/CategoryModel');
 
 const createCategory = asyncHandler(async(req, res)=>{
     try {
-        if(!req.body.title || !req.body.title){
+        console.log(req.body);
+        if(!req.body.title){
             return res.status(500).json({ message: 'Category Title is required'});
         }
-        const {sub_categories} = req.body;
+        // const {sub_categories} = req.body;
         const category = await Category.create({...req.body});
         // if the body contains sub categories create them
-        var addedSubCategories = new Array;
-        if(sub_categories){
-            if(Array.isArray(sub_categories)){
-                for (const subCat of sub_categories){
-                    const subCategory = await SubCategory.create({...subCat, parent:category._id});
-                    addedSubCategories.push(subCategory)
-                }
-            }
-            else{
-                const subCategory = await SubCategory.create({...sub_categories, parent:category._id});
-                addedSubCategories.push(subCategory)
-            }
-        }
-        res.status(200).json({category , addedSubCategories});
+        // var addedSubCategories = new Array;
+        // if(sub_categories){
+        //     if(Array.isArray(sub_categories)){
+        //         for (const subCat of sub_categories){
+        //             const subCategory = await SubCategory.create({...subCat, parent:category._id});
+        //             addedSubCategories.push(subCategory)
+        //         }
+        //     }
+        //     else{
+        //         const subCategory = await SubCategory.create({...sub_categories, parent:category._id});
+        //         addedSubCategories.push(subCategory)
+        //     }
+        // }
+        res.status(200).json({message:'created sucessfully', category});
     } catch (err) {
         res.status(500).json({ message: 'Server error', error:err });
     }

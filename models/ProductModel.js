@@ -88,28 +88,14 @@ var productSchema = new mongoose.Schema({
     ],
     reviews:[
         {
-            userId:{
-                type: mongoose.Schema.Types.ObjectId,
-                ref:"User" 
-            },
-            author:{
-                type: String,
-                required:true,
-            },
-            rate:{
-                type: Number,
-                required:true,
-            },
-            title:{
-                type: String,
-            },
-            comment:{
-                type: String,
-            },
-            active:{
-                type:Boolean,
-                default:true
-            }
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"Review",
+        }
+    ],
+    orders:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"Order",
         }
     ]
 }, 

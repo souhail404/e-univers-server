@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 
 var userSchema = new mongoose.Schema({
-    firt_name:{
+    firtName:{
         type:String,
         required:true,
     },
-    last_name:{
+    lastName:{
         type:String,
         required:true,
     },
-    user_name:{
+    userName:{
         type:String,
         required:true,
         unique:true,
@@ -47,7 +47,7 @@ var userSchema = new mongoose.Schema({
                 type:String,
                 required:true,
             },
-            house_number:{
+            houseNumber:{
                 type:Number,
                 required:true,
             } 
@@ -60,45 +60,8 @@ var userSchema = new mongoose.Schema({
     },
     orders:[
         {
-            items:[
-                {
-                    quantity:{
-                        type:Number,
-                        default:1
-                    },
-                    item_id:{
-                        type: mongoose.Schema.Types.ObjectId,
-                        ref:"Product",
-                    }
-                }
-            ],
-            shipping_address:{
-                    country:{
-                        type:String,
-                        required:true,
-                    },
-                    city:{
-                        type:String,
-                        required:true,
-                    },
-                    zip:{
-                        type:Number,
-                        required:true,
-                    },
-                    street:{
-                        type:String,
-                        required:true,
-                    },
-                    house_number:{
-                        type:Number,
-                        required:true,
-                    } 
-            },
-            order_state:{
-                type:String,
-                enum:['pending','processing','delivered','backorder'], 
-                default:'pending',
-            },
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"Order",
         }
     ],
     cart:[
@@ -110,6 +73,10 @@ var userSchema = new mongoose.Schema({
             quantity:{
                 type:Number,
                 default:1
+            },
+            price:{
+                type:Number,
+                require:true,
             }
         }
     ],
@@ -119,6 +86,12 @@ var userSchema = new mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 ref:"Product",
             }
+        }
+    ],
+    reviews:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"Review",
         }
     ],
 }, 

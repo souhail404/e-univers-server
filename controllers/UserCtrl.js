@@ -115,13 +115,16 @@ const loginAdmin = asyncHandler(async(req, res)=>{
 
 // FIND ALL USERS
 const getUsers = asyncHandler(async(req, res)=>{
-    const user = await User.find({});
-    if(user){ 
-        res.json(user)
-    }   
-    else{
-        res.json({msg:'There is no user'})
+    try {
+        const users = await User.find({});
+        if(!users){ 
+            return res.status(404).json({message:'users not found'})
+        } 
+        return res.status(200).json({users})
+    } catch (error) {
+        return res.status(500).json({message:'intenal server error', error:error})
     }
+    
 })
 
 // UPDATE USER 

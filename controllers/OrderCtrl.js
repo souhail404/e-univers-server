@@ -111,7 +111,7 @@ const getAllOrders = asyncHandler(async (req, res) => {
     // Execute the query to find products
     let ordersQuery = Order.find(query)
                       .populate({path:'items.itemId', select:'title'})
-                      .populate({path:'userId', select:'userName -_id'})
+                      .populate({path:'userId'})
     
     // Sorting
     const sort = req.query.sort || 'createdAt:desc'  
@@ -141,7 +141,7 @@ const getAllOrders = asyncHandler(async (req, res) => {
     return res.status(200).json({
         totalOrders: totalOrdersCount,
         totalPages: totalPages,
-        currentPage: currentPage,
+        currentPage: currentPage, 
         pageSize: pageSizeValue,
         orders
     });

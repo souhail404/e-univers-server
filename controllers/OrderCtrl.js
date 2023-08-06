@@ -65,7 +65,10 @@ const createOrder = asyncHandler(async (req, res) => {
 
     // Create the order
     const newOrder = await Order.create({items:validatedItems, shippingAddress, orderState: 'pending', total:totalPrice, userId})
-
+    // add order to user
+    user.orders.push(newOrder._id);
+    await user.save()
+    
     res.status(200).json({message:'order created successfully', newOrder});
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error:error});

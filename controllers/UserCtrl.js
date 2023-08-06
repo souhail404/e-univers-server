@@ -58,7 +58,7 @@ const loginUser = asyncHandler(async(req, res)=>{
         // check if the password match 
         if(user.password === req.body.password){
             res.json({
-                user:user.userName,
+                userName:user.userName,
                 email:user.email,
                 token:generateToken(user._id)
             })
@@ -81,11 +81,11 @@ const loginAdmin = asyncHandler(async(req, res)=>{
         };
 
         // find the user by email, username or mobile
-        const user_ref = req.body.user_ref;
+        const userRef = req.body.userRef;
 
-        const user = await User.findOne({mobile:user_ref}) || 
-                     await User.findOne({user_name:user_ref}) || 
-                     await User.findOne({email:user_ref});
+        const user = await User.findOne({mobile:userRef}) || 
+                     await User.findOne({userName:userRef}) || 
+                     await User.findOne({email:userRef});
 
         if(!user){
             return res.status(404).json({error:'user not found'});
@@ -95,7 +95,7 @@ const loginAdmin = asyncHandler(async(req, res)=>{
         if(user.password === req.body.password){
             if(user.role==='admin'){
                 res.json({
-                    user:user.user_name,
+                    user:user.userName,
                     email:user.email,
                     token:generateToken(user._id)
                 })
@@ -124,7 +124,81 @@ const getUsers = asyncHandler(async(req, res)=>{
     } catch (error) {
         return res.status(500).json({message:'intenal server error', error:error})
     }
+})
+
+const getCustomers = asyncHandler(async(req, res)=>{
+    try {
+        const {
+            recentlyAdded,
+            search,   
+            page,    
+            pageSize,
+        } = req.query;  
+        // build the query
+        const query = {};
+
+        // Recently Added filter
+        if (recentlyAdded === 'true') {
+            const today = new Date();
+            const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+            query.createdAt = { $gte: lastWeek };
+        }
+
+        // Keywords/Search filter
+        if (search) {
+            query.$or = [
+                { userName: { $regex: search, $options: 'i' } },
+                { firtName: { $regex: search, $options: 'i' } },
+                { lastName: { $regex: search, $options: 'i' } },
+                { email: { $regex: search, $options: 'i' } },
+                { phone: { $regex: search, $options: 'i' } },
+            ];
+        }
+
+        // Execute the query to find products
+        let customersQuery = User.find({...query, role:'customer'})
+
+        // Sorting
+        const sort = req.query.sort || 'createdAt:desc'  
+        if (sort) {
+            const [sortField, sortOrder] = sort.split(':');
+            const sortOptions = {};
+            sortOptions[sortField] = sortOrder === 'desc' ? -1 : 1;
+            customersQuery = customersQuery.sort(sortOptions);
+        }
+
+        // Pagination
+        const DEFAULT_PAGE_SIZE = 10; 
+        const currentPage = parseInt(page) || 1;
+        const pageSizeValue = parseInt(pageSize) || DEFAULT_PAGE_SIZE;
+        const skipItems = (currentPage - 1) * pageSizeValue;
+        customersQuery = customersQuery.skip(skipItems).limit(pageSizeValue);
+
+        const customers = await customersQuery.exec();
     
+        const totalCustomersCount = await User.countDocuments(query).exec();
+
+        const totalPages = Math.ceil(totalCustomersCount / pageSizeValue);
+        
+        if(!customers){ 
+            return res.status(404).json({message:'customers not found'})
+        } 
+        return res.status(200).json({totalCustomers:totalCustomersCount, totalPages , currentPage, pageSize: pageSizeValue, customers})
+    } catch (error) {
+        return res.status(500).json({message:'intenal server error', error:error})
+    }
+})
+
+const getAdmins = asyncHandler(async(req, res)=>{
+    try {
+        const admins = await User.find({role:'admin'});
+        if(!admins){ 
+            return res.status(404).json({message:'customers not found'})
+        } 
+        return res.status(200).json({admins})
+    } catch (error) {
+        return res.status(500).json({message:'intenal server error', error:error})
+    }
 })
 
 // UPDATE USER 
@@ -164,5 +238,7 @@ module.exports = {
     loginUser, 
     updateUser, 
     deleteUser,
-    loginAdmin
+    loginAdmin,
+    getCustomers,
+    getAdmins
 }

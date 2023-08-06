@@ -218,22 +218,22 @@ const deleteProduct = asyncHandler(async(req, res)=>{
     res.json({deletedProduct});    
 });
 
-
-
 const generateMockProducts = () => {
   const products = [];
 
   for (let i = 0; i < 10; i++) {
     const product = {
-      title: faker.commerce.productName(),
-      mini_description: faker.lorem.sentence(),
-      description: faker.lorem.paragraph(),
-      stock: faker.random.number({ min: 1, max: 100 }),
-      price: faker.random.number({ min: 10, max: 1000, precision: 0.01 }),
-      discount: faker.random.number({ min: 0, max: 50, precision: 0.1 }),
-      liked: faker.random.number({ min: 0, max: 200 }),
-      added_to_cart: faker.random.number({ min: 0, max: 200 }),
-      ordered: faker.random.number({ min: 0, max: 200 }),
+        title: faker.commerce.productName(),
+        slugTitle: faker.commerce.productName(),
+        miniDescription: faker.lorem.sentence(),
+        description: faker.lorem.paragraph(),
+        sellPrice: faker.random.number({ min: 10, max: 10000, precision: 0.01 }),
+        comparePrice: faker.random.number({ min: 10, max: 10000, precision: 0.01 }),
+        costPrice: faker.random.number({ min: 10, max: 10000 , precision: 0.01 }),
+        //   discount: faker.random.number({ min: 0, max: 50, precision: 0.1 }),
+        liked: faker.random.number({ min: 0, max: 70 }),
+        added_to_cart: faker.random.number({ min: 0, max: 80 }),
+        ordered: faker.random.number({ min: 0, max: 80 }),
     };
 
     products.push(product);

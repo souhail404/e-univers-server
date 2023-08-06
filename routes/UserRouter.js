@@ -2,6 +2,8 @@
 const {
     createUser,
     getUsers,
+    getCustomers,
+    getAdmins,
     loginUser, 
     updateUser, 
     deleteUser,
@@ -40,14 +42,20 @@ const router = express.Router();
 // CRAETE USER -ROUTE 
 router.post('/register', createUser)
 
-// LOGIN USER -ROUTE 
-router.post('/login', loginUser)
-
 // LOGIN ADMIN -ROUTE 
 router.post('/admin-login', loginAdmin)
 
+// LOGIN USER -ROUTE 
+router.post('/login', loginUser)
+
 // GET ALL USERS -ROUTE 
 router.get('/', authMiddleware, isAdmin , getUsers)
+
+// GET ALL USERS -ROUTE 
+router.get('/customers', authMiddleware, isAdmin , getCustomers)
+
+// GET ALL USERS -ROUTE 
+router.get('/admins', authMiddleware, isAdmin , getAdmins)
 
 // UPDATE USER -ROUTE 
 router.put('/:id',authMiddleware, updateUser) 

@@ -57,7 +57,7 @@ router.delete('/:id/variants/:variantId', authMiddleware, isAdmin , deleteProduc
 
 // UPDATE A PRODUCT VARIANT -ROUTE 
 router.put('/:id/variants/:variantId', authMiddleware, isAdmin , updateProductVariant)
-
+ 
 
 
 module.exports = router;

@@ -3,7 +3,7 @@ const {
     createOrder,
     changeOrderState,
     getAllOrders,
-    getUserOrders
+    getUserOrders,
 } = require('../controllers/OrderCtrl');
 
 const { authMiddleware, isAdmin } = require('../middlewares/authMiddleware');
@@ -22,5 +22,6 @@ router.get('/all', authMiddleware, isAdmin, getAllOrders);
 
 // GET USER ORDERS STATE
 router.get('/user', authMiddleware, getUserOrders);
+
 
 module.exports = router;

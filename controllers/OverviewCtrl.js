@@ -87,7 +87,6 @@ const getOverview = asyncHandler(async (req,  res)=>{
       })
       thisWeekCustomers = currentWeekCustomers.length;
       prevWeekCustomers = previousWeekCustomers.length;
-      console.log(thisWeekCustomers, prevWeekCustomers);
       res.json({thisWeekOrders, prevWeekOrders, thisWeekAmount, prevWeekAmount, thisWeek, previousWeek, thisWeekCustomers, prevWeekCustomers})
     }
     catch(error){ 

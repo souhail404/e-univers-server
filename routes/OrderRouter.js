@@ -14,14 +14,14 @@ const router = express.Router();
 
 // CREATE ORDER
 router.post('/create', authMiddleware, createOrder);
-
+ 
 // CHANGE ORDER STATE
 router.put('/update/:orderId', authMiddleware, isAdmin, changeOrderState);
 
 // GET ALL ORDERS STATE
 router.get('/all', authMiddleware, isAdmin, getAllOrders);
 
-// GET USER ORDERS STATE
+// GET USER ORDERS STATE 
 router.get('/user', authMiddleware, getUserOrders);
 
 

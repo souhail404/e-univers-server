@@ -13,13 +13,21 @@ var orderSchema = new mongoose.Schema({
             },
             itemName:String,
             itemOptions:[
-                {
+                {   
+                    variant:{
+                        type:String,
+                    },
                     variantId:{
                         type: mongoose.Schema.Types.ObjectId,
+                        ref:'Product.variants'
                     },
                     optionId:{
                         type: mongoose.Schema.Types.ObjectId,
-                    }
+                        ref:'Product.variants.options'
+                    },
+                    option:{
+                        type:String,
+                    },
                 }
             ],
             itemPrice:Number,
@@ -52,7 +60,9 @@ var orderSchema = new mongoose.Schema({
     userId:{
         type: mongoose.Schema.Types.ObjectId,
         ref:"User",
-    }
+    },
+    backorderAt:Date,
+    deliveredAt:Date,
 }, 
 {
     timestamps:true,

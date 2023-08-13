@@ -36,14 +36,20 @@ const createOrder = asyncHandler(async (req, res) => {
         //set item price
         item.itemPrice= product.sellPrice;
         // add price difference for every option selected
-        item.itemOptions.forEach((option) => {
+        item.itemOptions.forEach((option, index) => {
+          let variantName = '';
+          let optionName = '';
+
           const variant = product.variants.find((v) => v._id.toString() === option.variantId.toString());
           if (variant) {
             const selectedOption = variant.options.find((opt) => opt._id.toString() === option.optionId.toString());
             if (selectedOption) {
               item.itemPrice += selectedOption.priceDef; // Add the priceDef to the totalPrice
-            }
+              optionName = selectedOption.value;
+            }  
+            variantName = variant.name;
           }
+          item.itemOptions[index] = {...option, variant:variantName,option:optionName}
         });
         // set item total price based on item price and quantity
         item.itemTotalPrice= item.itemPrice * item.quantity; 
@@ -154,6 +160,26 @@ const getAllOrders = asyncHandler(async (req, res) => {
   }
 });
 
+// get all orders (admin)
+const getOneOrder = asyncHandler(async (req, res) => {
+  try {  
+    const { orderId } = req.params;
+
+    const order =await Order.findById(orderId)
+                            .populate({path:'items.itemId'})
+                            .populate({path:'userId'});
+    if(!order){
+      return res.status(404).json({message:'Order not found'})
+    }
+    const orderItems =order.items;
+
+    return res.status(200).json({orderItems, order})
+
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error:error});
+  }
+});
+
 // get User orders
 const getUserOrders = asyncHandler(async (req, res) => {
   try {  
@@ -169,23 +195,30 @@ const getUserOrders = asyncHandler(async (req, res) => {
 const changeOrderState = asyncHandler(async (req, res) => {
   try {
     const orderId = req.params.orderId;
-    const newOrderState = req.body.order_state;
-
+    const newOrderState = req.body.orderState;
+    const nowDate = new Date();
+    console.log(nowDate);
     if (!orderId || !newOrderState) {
+      console.log(orderId, newOrderState);
       return res.status(400).json({ message: 'Invalid order ID or order state' });
     }
+    let data = {orderState:newOrderState}
 
-    const user = await User.findOneAndUpdate(
-      { 'orders._id': orderId },
-      { $set: { 'orders.$.order_state': newOrderState } },
-      { new: true }
-    );
-
-    if (!user) {
-      return res.status(404).json({ message: 'Order not found' });
+    if(newOrderState==='delivered'){
+      data = {...data, deliveredAt:nowDate , backorderAt:''}
+    }
+    else if(newOrderState==='backorder'){
+      data = {...data, backorderAt:nowDate , deliveredAt:''} 
+    } 
+    else{
+      data = {...data, backorderAt:'' , deliveredAt:''}
     }
 
-    res.json(user);
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, {...data}, {new:true});
+    if(!updatedOrder){
+      return res.status(404).json({ message: 'Failed to change state' });
+    }
+    return res.status(200).json({order:updatedOrder, orderItems:updatedOrder.items});
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }
@@ -196,5 +229,6 @@ module.exports = {
   createOrder,
   changeOrderState,
   getAllOrders,
+  getOneOrder,
   getUserOrders,
 };

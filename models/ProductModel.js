@@ -72,7 +72,7 @@ var productSchema = new mongoose.Schema({
                 {
                     value:{
                         type:String,
-                        required:true,
+                        required:true, 
                     },
                     priceDef:{
                         type:Number,

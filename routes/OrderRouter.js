@@ -4,7 +4,7 @@ const {
     changeOrderState,
     getAllOrders,
     getUserOrders,
-    OverviewOrder
+    getOneOrder,
 } = require('../controllers/OrderCtrl');
 
 const { authMiddleware, isAdmin } = require('../middlewares/authMiddleware');
@@ -20,6 +20,9 @@ router.put('/update/:orderId', authMiddleware, isAdmin, changeOrderState);
 
 // GET ALL ORDERS STATE
 router.get('/all', authMiddleware, isAdmin, getAllOrders);
+
+// GET ALL ORDERS STATE
+router.get('/one/:orderId', authMiddleware, isAdmin, getOneOrder);
 
 // GET USER ORDERS STATE 
 router.get('/user', authMiddleware, getUserOrders);

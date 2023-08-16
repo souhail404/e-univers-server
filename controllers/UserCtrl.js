@@ -1,6 +1,7 @@
 // dependencies
 const asyncHandler = require('express-async-handler');
 const {generateToken} = require('../config/jwtToken')
+const bcrypt = require('bcrypt')
 // models
 const User = require('../models/UserModel');
 
@@ -29,8 +30,9 @@ const createUser = asyncHandler(async(req, res)=>{
         throw Error('the mobile you entred already exist !');
     };
 
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
     // create the new user
-    const newUser = await User.create({...req.body, reviews:[]});
+    const newUser = await User.create({...req.body, password:hashedPassword , reviews:[]});
 
     res.json(newUser);
 });
@@ -38,7 +40,6 @@ const createUser = asyncHandler(async(req, res)=>{
 // Login USER
 const loginUser = asyncHandler(async(req, res)=>{
     try{
-        console.log(req.body);
         // check if already connected
         if(req.headers.authorization){
             return res.status(404).json({error:'you are already connected, please logout !'});
@@ -52,23 +53,24 @@ const loginUser = asyncHandler(async(req, res)=>{
                     await User.findOne({email:userRef});
 
         if(!user){
-            return res.status(404).json({error:'user not found'});
+            return res.status(404).json({message:'user not found'});
         }    
 
         // check if the password match 
-        if(user.password === req.body.password){
-            res.json({
-                userName:user.userName,
-                email:user.email,
-                token:generateToken(user._id)
-            })
+        const isPassworCorrect = await bcrypt.compare(req.body.password, user.password)
+        if(!isPassworCorrect){
+            return res.status(400).json({message:'incorrect password'});
+            
         }
-        else{
-            return res.status(404).json({error:'incorrect password'});
-        } 
+        res.status(200).json({
+            id:user._id,
+            user:user.userName,
+            email:user.email,
+            token:generateToken(user._id)
+        })
     }
     catch(err){
-        return res.status(400).json({msg:'server error', error:err});
+        return res.status(500).json({message:'server error', error:err});
     }
 })
 
@@ -77,7 +79,7 @@ const loginAdmin = asyncHandler(async(req, res)=>{
     try{
         // check if already connected
         if(req.headers.authorization){
-            return res.status(404).json({error:'you are already connected, please logout !'});
+            return res.status(404).json({message:'you are already connected, please logout !'});
         };
 
         // find the user by email, username or mobile
@@ -88,25 +90,23 @@ const loginAdmin = asyncHandler(async(req, res)=>{
                      await User.findOne({email:userRef});
 
         if(!user){
-            return res.status(404).json({error:'user not found'});
-        }    
-
-        // check if the password match 
-        if(user.password === req.body.password){
-            if(user.role==='admin'){
-                res.json({
-                    user:user.userName,
-                    email:user.email,
-                    token:generateToken(user._id)
-                })
-            }
-            else{
-                return res.status(400).json({error:'you are not an admin'});
-            }
-        }
-        else{
-            return res.status(404).json({error:'incorrect password'});
+            return res.status(404).json({message:'user not found'});
         } 
+        // check if admin   
+        if (user.role !== 'admin') {
+            return res.status(400).json({message:'you are not an admin'});
+        }
+        // check if the password match 
+        const isPassworCorrect = await bcrypt.compare(req.body.password, user.password)
+        if(!isPassworCorrect){
+            return res.status(400).json({message:'Password incorrect'});
+        }
+        res.status(200).json({
+            id:user._id,
+            user:user.userName,
+            email:user.email,
+            token:generateToken(user._id)
+        })
     }
     catch(err){
         return res.status(500).json({msg:'server error', error:err});
@@ -121,6 +121,19 @@ const getUsers = asyncHandler(async(req, res)=>{
             return res.status(404).json({message:'users not found'})
         } 
         return res.status(200).json({users})
+    } catch (error) {
+        return res.status(500).json({message:'intenal server error', error:error})
+    }
+})
+
+const getUserById = asyncHandler(async(req, res)=>{
+    try {
+        const {userId} = req.params;
+        const user = await User.findById(userId);
+        if(!user){ 
+            return res.status(404).json({message:'users not found'})
+        } 
+        return res.status(200).json({user})
     } catch (error) {
         return res.status(500).json({message:'intenal server error', error:error})
     }
@@ -217,6 +230,35 @@ const updateUser = asyncHandler(async(req, res)=>{
     res.json(user);   
 });
 
+// RESET USER PASSWORD
+const resetPassword = asyncHandler(async(req, res)=>{
+    try {
+        const userId = req.params.userId;
+        const {currentPassword, newPassword, newPasswordTwo} = req.body;
+        // check the ownership or admin
+        if(String(req.user._id) !== String(userId) && req.user.role !== 'admin'){
+            return res.status(400).json({message:'you are not authorized to update this user'})
+        }
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({message:'user not found'})
+        }
+        if (newPassword !== newPasswordTwo) {
+            return res.status(400).json({message:"New Password doesn't match with confirmation"})
+        }
+        // check if password correct
+        const isPassworCorrect = await bcrypt.compare(currentPassword, user.password)
+        if (!isPassworCorrect) {
+            return res.status(400).json({message:'password you entred is incorrect'})
+        } 
+        user.password = await bcrypt.hash(newPassword, 10);
+        await user.save(); 
+        return res.status(200).json({message:"Password updated successfully"})
+    } catch (error) {
+        return res.status(500).json({message:"internal server error" , error})
+    }
+});
+
 // DELETE USER 
 const deleteUser = asyncHandler(async(req, res)=>{
     const id = req.params.id;
@@ -240,5 +282,7 @@ module.exports = {
     deleteUser,
     loginAdmin,
     getCustomers,
-    getAdmins
+    getAdmins,
+    getUserById,
+    resetPassword
 }

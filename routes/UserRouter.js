@@ -7,7 +7,9 @@ const {
     loginUser, 
     updateUser, 
     deleteUser,
-    loginAdmin
+    loginAdmin,
+    getUserById,
+    resetPassword
 } = require('../controllers/UserCtrl');
 
 const {
@@ -51,6 +53,9 @@ router.post('/login', loginUser)
 // GET ALL USERS -ROUTE 
 router.get('/', authMiddleware, isAdmin , getUsers)
 
+// GET USER BY ID -ROUTE 
+router.get('/id/:userId', authMiddleware, isAdmin , getUserById)
+
 // GET ALL USERS -ROUTE 
 router.get('/customers', authMiddleware, isAdmin , getCustomers)
 
@@ -58,7 +63,10 @@ router.get('/customers', authMiddleware, isAdmin , getCustomers)
 router.get('/admins', authMiddleware, isAdmin , getAdmins)
 
 // UPDATE USER -ROUTE 
-router.put('/:id',authMiddleware, updateUser) 
+router.put('/update/:id',authMiddleware, updateUser) 
+
+// RESET PASSWORD -ROUTE 
+router.put('/reset-password/:userId',authMiddleware, resetPassword) 
 
 // DELETE USER -ROUTE 
 router.delete('/:id', authMiddleware , deleteUser)

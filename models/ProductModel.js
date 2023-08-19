@@ -40,6 +40,7 @@ var productSchema = new mongoose.Schema({
     images:[
         {
             url:String,
+            publicId:String,
         }
     ],
     active:{

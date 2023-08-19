@@ -11,11 +11,12 @@ const cloudinaryUploadImg = async(file)=>{
         cloudinary.uploader.upload(file, (result)=>{
             resolve(
                 {
+                    publicId: result.public_id,
                     url:result.secure_url,
                 },
                 {
                     resource_type: "auto",
-                }
+                } 
             )
         })
     })

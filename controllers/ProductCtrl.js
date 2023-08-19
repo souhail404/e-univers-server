@@ -6,29 +6,30 @@ const fs = require('fs')
 // models
 const {Product} = require('../models/ProductModel');
 const cloudinaryUploadImg = require('../utils/cloudinary');
+const deleteImage = require('../services/DeleteImage');
 
 // CREATE A PRODUCT 
 const createProduct = asyncHandler(async(req, res)=>{
     try{
         const uploader = (path) => cloudinaryUploadImg(path, 'images')
-        const urls = [];
+        const images = [];
         const files = req.files;
         for(const file of files){
             const {path} = file;
-            const newPath = await uploader(path);
-            urls.push(newPath);
+            const uploadRes = await uploader(path);
+            images.push(uploadRes);
+            console.log(images);
             fs.unlinkSync(path);
         }
 
         const {title, slug_title, mini_description, description, price, variants} = req.body;
-        const product = await Product.create({...req.body, variants:JSON.parse(variants), images:urls})
+        const product = await Product.create({...req.body, variants:JSON.parse(variants), images})
         res.status(200).json(product);
     } 
     catch(err){
         res.status(500).json(err) 
     }
 });
-
 
 // GET PRODUCTS // FILTERING 
 const getProducts = asyncHandler(async(req, res)=>{
@@ -174,28 +175,38 @@ const getProduct = asyncHandler(async(req, res)=>{
 
 // UPDATE PRODUCT 
 const updateProduct = asyncHandler(async(req, res)=>{
-    const productId = req.params.productId
+    const productId = req.params.productId;
     try{
+        const deletedImages = JSON.parse(req.body.deletedImages);
+        if (deletedImages && deletedImages.length > 0) {
+            console.log(deletedImages);
+            for (const image of deletedImages) {
+              if(image.publicId){
+                await deleteImage(image.publicId);
+              }
+            }
+        }
+        //  upload images
         const uploader = (path) => cloudinaryUploadImg(path, 'images')
-        const newUrls = [];
-        const urls = JSON.parse(req.body.existingImages);
+        const newImages = [];
+        const images = JSON.parse(req.body.existingImages);
         const files = req.files;
         for(const file of files){
             const {path} = file;
-            const newPath = await uploader(path);
-            newUrls.push(newPath);
+            const uploadRes = await uploader(path);
+            newImages.push(uploadRes);
             fs.unlinkSync(path);
         }
 
 
-        for (let i = 0; i < urls.length; i++) {
-            if (typeof urls[i].url === "number") {
-                urls[i] = newUrls.shift();
+        for (let i = 0; i < images.length; i++) {
+            if (typeof images[i].url === "number") {
+                images[i] = newImages.shift();
             }
         }
             
         const {title, slugTitle, miniDescription, description, costPrice, variants} = req.body;
-        const product = await Product.findOneAndUpdate({_id:productId}, {...req.body, variants:JSON.parse(variants), images:urls}, {new:true})
+        const product = await Product.findOneAndUpdate({_id:productId}, {...req.body, variants:JSON.parse(variants), images}, {new:true})
         res.status(200).json(product);
     } 
     catch(err){
@@ -206,16 +217,33 @@ const updateProduct = asyncHandler(async(req, res)=>{
 
 // DELETE PRODUCT 
 const deleteProduct = asyncHandler(async(req, res)=>{
-    const productId = req.params.productId
-    if(!productId){
-        throw Error('you must pass the product id in the url')
-    }
-    // delete product
-    const deletedProduct = await Product.findOneAndDelete({_id:productId});
-    if(!deletedProduct){
-        throw Error('error while Deleting product')
-    }
-    res.json({deletedProduct});    
+    try {
+        const productId = req.params.productId
+        if(!productId){
+            return res.status(400).json({message:'you must pass the product id in the url'})
+        }
+        const product = await Product.findById(productId);
+        if(!product){
+            return res.status(404).json({message:'Product Not found'})
+        }
+        // delete images
+        const images = product.images;
+        if (images && images.length > 0) {
+            for (const image of images) {
+                if(image.publicId){
+                    await deleteImage(image.publicId);
+                }
+            }
+        }
+        // delete product
+        const deletedProduct = await Product.findOneAndDelete({_id:productId});
+        if(!deletedProduct){
+            return res.status(400).json({message:'error while Deleting product'})
+        }
+        res.status(200).json({message:'Product deleted successfully', deletedProduct});    
+    } catch (error) {
+        res.status(500).json({message:'internal server error', error});
+    }   
 });
 
 const generateMockProducts = () => {
@@ -241,7 +269,6 @@ const generateMockProducts = () => {
 
   return products;
 };
-
 
 const generate = asyncHandler(async(req, res)=>{
     const mockProducts = generateMockProducts();

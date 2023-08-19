@@ -26,7 +26,6 @@ const addReview = asyncHandler(async(req, res)=>{
         }
         // check if already reviewed
         const AlreadyReviewed = await Review.find({itemId:productId, userId:userId})
-        console.log(AlreadyReviewed);
         if(AlreadyReviewed.length > 0 && user.role !=='admin'){
             return res.status(400).json({ message: "you reviewd this product already"});
         }

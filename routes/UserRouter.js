@@ -63,13 +63,13 @@ router.get('/customers', authMiddleware, isAdmin , getCustomers)
 router.get('/admins', authMiddleware, isAdmin , getAdmins)
 
 // UPDATE USER -ROUTE 
-router.put('/update/:id',authMiddleware, updateUser) 
+router.put('/update/:userId',authMiddleware, updateUser) 
 
 // RESET PASSWORD -ROUTE 
 router.put('/reset-password/:userId',authMiddleware, resetPassword) 
 
 // DELETE USER -ROUTE 
-router.delete('/:id', authMiddleware , deleteUser)
+router.delete('/:userId', authMiddleware , deleteUser)
 
 // ADD A USER ADDRESS -ROUTE 
 router.post('/:id/addresses/add', authMiddleware , addUserAddress)

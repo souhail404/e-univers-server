@@ -7,34 +7,34 @@ const User = require('../models/UserModel');
 
 // CREATE A USER
 const createUser = asyncHandler(async(req, res)=>{
-    // check if already connected
-    if(req.headers.authorization){
-        throw Error('you are already connected, please logout!');
-    };
+    try {
+        // check if email, username or mobile already exists
+        const email = req.body.email;
+        const username = req.body.userName;
+        const mobile = req.body.mobile;
 
-    // check if email, username or mobile already exists
-    const email = req.body.email;
-    const username = req.body.userName;
-    const mobile = req.body.mobile;
+        const existEmail = await User.findOne({email:email});
+        const existUsername = await User.findOne({userName:username});
+        const existMobile = await User.findOne({mobile:mobile});
+        if(existEmail){
+            return res.status(400).json({message:"the email you entred already exist !"})
+        };
+        if(existUsername){
+            return res.status(400).json({message:"the username you entred already exist !"})
+            throw Error('the  you entred already exist !');
+        };
+        if(existMobile){
+            return res.status(400).json({message:"the mobile you entred already exist !"})
+        };
 
-    const existEmail = await User.findOne({email:email});
-    const existUsername = await User.findOne({userName:username});
-    const existMobile = await User.findOne({mobile:mobile});
-    if(existEmail){
-        throw Error('the email you entred already exist !');
-    };
-    if(existUsername){
-        throw Error('the username you entred already exist !');
-    };
-    if(existMobile){
-        throw Error('the mobile you entred already exist !');
-    };
-
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    // create the new user
-    const newUser = await User.create({...req.body, password:hashedPassword , reviews:[]});
-
-    res.json(newUser);
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+        // create the new user
+        const newUser = await User.create({...req.body, password:hashedPassword , reviews:[]});
+        return res.status(200).json({message:"user created successfully", newUser})
+    } catch (error) {
+        return res.status(500).json({message:"intrenal server error", error})
+    }
+    
 });
 
 // Login USER
@@ -169,7 +169,7 @@ const getCustomers = asyncHandler(async(req, res)=>{
         }
 
         // Execute the query to find products
-        let customersQuery = User.find({...query, role:'customer'})
+        let adminsQuery = User.find({...query, role:'customer'})
 
         // Sorting
         const sort = req.query.sort || 'createdAt:desc'  
@@ -177,7 +177,7 @@ const getCustomers = asyncHandler(async(req, res)=>{
             const [sortField, sortOrder] = sort.split(':');
             const sortOptions = {};
             sortOptions[sortField] = sortOrder === 'desc' ? -1 : 1;
-            customersQuery = customersQuery.sort(sortOptions);
+            adminsQuery = adminsQuery.sort(sortOptions);
         }
 
         // Pagination
@@ -185,11 +185,11 @@ const getCustomers = asyncHandler(async(req, res)=>{
         const currentPage = parseInt(page) || 1;
         const pageSizeValue = parseInt(pageSize) || DEFAULT_PAGE_SIZE;
         const skipItems = (currentPage - 1) * pageSizeValue;
-        customersQuery = customersQuery.skip(skipItems).limit(pageSizeValue);
+        adminsQuery = adminsQuery.skip(skipItems).limit(pageSizeValue);
 
-        const customers = await customersQuery.exec();
+        const customers = await adminsQuery.exec();
     
-        const totalCustomersCount = await User.countDocuments(query).exec();
+        const totalCustomersCount = await User.countDocuments({...query, role:'customer'}).exec();
 
         const totalPages = Math.ceil(totalCustomersCount / pageSizeValue);
         
@@ -204,11 +204,52 @@ const getCustomers = asyncHandler(async(req, res)=>{
 
 const getAdmins = asyncHandler(async(req, res)=>{
     try {
-        const admins = await User.find({role:'admin'});
+        const {
+            search,   
+            page,    
+            pageSize,
+        } = req.query;  
+        // build the query
+        const query = {};
+
+        // Keywords/Search filter
+        if (search) {
+            query.$or = [
+                { userName: { $regex: search, $options: 'i' } },
+                { firtName: { $regex: search, $options: 'i' } },
+                { lastName: { $regex: search, $options: 'i' } },
+                { email: { $regex: search, $options: 'i' } },
+                { phone: { $regex: search, $options: 'i' } }, 
+            ];
+        }
+        // Execute the query to find products
+        let adminsQuery = User.find({...query, role:'admin'})
+
+        // Sorting
+        const sort = req.query.sort || 'createdAt:desc'  
+        if (sort) {
+            const [sortField, sortOrder] = sort.split(':');
+            const sortOptions = {};
+            sortOptions[sortField] = sortOrder === 'desc' ? -1 : 1;
+            adminsQuery = adminsQuery.sort(sortOptions);
+        }
+
+        // Pagination
+        const DEFAULT_PAGE_SIZE = 10; 
+        const currentPage = parseInt(page) || 1;
+        const pageSizeValue = parseInt(pageSize) || DEFAULT_PAGE_SIZE;
+        const skipItems = (currentPage - 1) * pageSizeValue;
+        adminsQuery = adminsQuery.skip(skipItems).limit(pageSizeValue);
+
+        const admins = await adminsQuery.exec();
+    
+        const totalAdminsCount = await User.countDocuments({...query, role:'admin'}).exec();
+        const totalPages = Math.ceil(totalAdminsCount / pageSizeValue);
+        
         if(!admins){ 
-            return res.status(404).json({message:'customers not found'})
+            return res.status(404).json({message:'Admins not found'})
         } 
-        return res.status(200).json({admins})
+        return res.status(200).json({totalAdmins:totalAdminsCount, totalPages , currentPage, pageSize: pageSizeValue, admins})
     } catch (error) {
         return res.status(500).json({message:'intenal server error', error:error})
     }
@@ -216,18 +257,38 @@ const getAdmins = asyncHandler(async(req, res)=>{
 
 // UPDATE USER 
 const updateUser = asyncHandler(async(req, res)=>{
-    const id = req.params.id;
-    // check the ownership or admin
-    if(String(req.user._id) !== String(id) && req.user.role !== 'admin'){
-        throw Error('you are not authorized to update this user')
-    }
-    // update the user
-    const user = await User.findOneAndUpdate({_id:id} , {...req.body} , {new:true});
-    
-    if(!user){
-        throw Error('error while Updating user')
-    }
-    res.json(user);   
+    try {
+        const id = req.params.userId;
+        // check the ownership or admin
+        if(String(req.user._id) !== String(id) && req.user.role !== 'admin'){
+            return res.status(400).json({message:"you are not authorized to update this user"}) 
+        }
+        const email = req.body.email;
+        const username = req.body.userName;
+        const mobile = req.body.mobile;
+
+        const existEmail = await User.findOne({email:email});
+        const existUsername = await User.findOne({userName:username});
+        const existMobile = await User.findOne({mobile:mobile});
+        if(existEmail && existEmail._id.toHexString()!==id.toString()){
+            return res.status(400).json({message:"the email you entred already exist !"}) 
+        };
+        if(existUsername && existUsername._id.toHexString()!==id.toString()){
+            return res.status(400).json({message:"the username you entred already exist !"})
+        };
+        if(existMobile && existMobile._id.toHexString()!==id.toString()){
+            return res.status(400).json({message:"the mobile you entred already exist !"})
+        };
+        // update the user
+        const user = await User.findOneAndUpdate({_id:id} , {...req.body} , {new:true});
+        
+        if(!user){
+            return res.status(404).json({message:"User not Found"})
+        }
+        return res.status(200).json(user);  
+    } catch (error) {
+        return res.status(500).json({message:"internal server error" , error})
+    } 
 });
 
 // RESET USER PASSWORD
@@ -261,17 +322,23 @@ const resetPassword = asyncHandler(async(req, res)=>{
 
 // DELETE USER 
 const deleteUser = asyncHandler(async(req, res)=>{
-    const id = req.params.id;
-    // check the ownership or admin
-    if(String(req.user._id) !== String(id) && req.user.role !== 'admin'){
-        throw Error('you are not authorized to delete this user')
+    try{
+        const id = req.params.userId;
+        // check the ownership or admin
+        if(String(req.user._id) !== String(id) && req.user.role !== 'admin'){
+            return res.status(400).json({message:'you are not authorized to delete this user'})
+        }
+        // delete user
+        const deletedUser = await User.findOneAndDelete({_id:id}); 
+        if(!deletedUser){
+            return res.status(400).json({message:'error while Deleting user'})
+        } 
+        return res.status(200).json({message:'user deleted successfully', deletedUser})
     }
-    // delete user
-    const deletedUser = await User.findOneAndDelete({_id:id});
-    if(!deletedUser){
-        throw Error('error while Deleting user')
+    catch(error){
+        return res.status(500).json({message:'internal server error', error})
     }
-    res.json({deletedUser});    
+    
 });
 
 module.exports = {

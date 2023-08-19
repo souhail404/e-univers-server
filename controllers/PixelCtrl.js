@@ -9,7 +9,6 @@ const {FacebookPixels, TiktokPixels, SnapchatPixels} = require('../models/PixelM
 const editFacebookPixels = asyncHandler(async(req, res)=>{
     try {
         const FbPixels = req.body.pixels;
-        console.log(req.body.pixels);
         if(!FbPixels){
             return res.status(400).json({ message: 'Please send a valid data'});
         }

@@ -7,7 +7,6 @@ const {Category , SubCategory} = require('../models/CategoryModel');
 
 const createCategory = asyncHandler(async(req, res)=>{
     try {
-        console.log(req.body);
         if(!req.body.title){
             return res.status(500).json({ message: 'Category Title is required'});
         }

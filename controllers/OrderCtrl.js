@@ -197,9 +197,7 @@ const changeOrderState = asyncHandler(async (req, res) => {
     const orderId = req.params.orderId;
     const newOrderState = req.body.orderState;
     const nowDate = new Date();
-    console.log(nowDate);
     if (!orderId || !newOrderState) {
-      console.log(orderId, newOrderState);
       return res.status(400).json({ message: 'Invalid order ID or order state' });
     }
     let data = {orderState:newOrderState}

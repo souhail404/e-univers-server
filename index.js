@@ -12,6 +12,7 @@ const ProductRouter = require('./routes/ProductRouter');
 const ReviewRouter = require('./routes/ReviewRouter'); 
 const OrderRouter = require('./routes/OrderRouter'); 
 const OverviewRouter = require('./routes/OverviewRouter'); 
+const PixelRouter = require('./routes/PixelRouter'); 
 
 // start the app
 const app = express();
@@ -50,3 +51,4 @@ app.use('/api/product/', ProductRouter);
 app.use('/api/review/', ReviewRouter);
 app.use('/api/order/', OrderRouter);
 app.use('/api/overview/', OverviewRouter);
+app.use('/api/pixel/', PixelRouter);

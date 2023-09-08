@@ -5,7 +5,7 @@ const fs = require('fs')
 const uploadImage = asyncHandler(async(req, res)=>{
     try {
         if(!req.files){
-            res.status(400).json({message:'files missing'});
+            return res.status(400).json({message:'files missing'});
         }
         const uploader = (path) => cloudinaryUploadImg(path, 'images')
         const urls = [];
@@ -16,9 +16,9 @@ const uploadImage = asyncHandler(async(req, res)=>{
             urls.push(newPath);
             fs.unlinkSync(path);
         }
-        res.status(200).json(urls);
+        return res.status(200).json(urls);
     } catch (error) {
-        res.status(500).json(error) 
+        return res.status(500).json({message:'Internal server error', error}) 
     }
 })
 

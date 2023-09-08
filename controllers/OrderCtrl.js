@@ -64,6 +64,8 @@ const createOrder = asyncHandler(async (req, res) => {
             itemPrice:item.itemPrice,
             itemTotalPrice:item.itemTotalPrice
         });
+        const userInfos = {fullName:`${user.lastName} ${user.firstName}` , mobile:`${user.mobile}`}
+
         // increment the ordred counter and save it
         const ordered = product.ordered + 1; 
         product.ordered = ordered;
@@ -71,14 +73,14 @@ const createOrder = asyncHandler(async (req, res) => {
     }
 
     // Create the order
-    const newOrder = await Order.create({items:validatedItems, shippingAddress, orderState: 'pending', total:totalPrice, userId})
+    const newOrder = await Order.create({items:validatedItems, shippingAddress, orderState: 'pending', total:totalPrice, userId, user:userInfos})
     // add order to user
     user.orders.push(newOrder._id);
     await user.save()
     
-    res.status(200).json({message:'order created successfully', newOrder});
+    return res.status(200).json({message:'order created successfully', order:newOrder});
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error:error});
+    return res.status(500).json({ message: 'Internal server error', error});
   }
 }); 
 
@@ -156,7 +158,7 @@ const getAllOrders = asyncHandler(async (req, res) => {
         orders
     });
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error:error});
+    return res.status(500).json({ message: 'Internal server error', error});
   }
 });
 
@@ -176,7 +178,7 @@ const getOneOrder = asyncHandler(async (req, res) => {
     return res.status(200).json({orderItems, order})
 
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error:error});
+    return res.status(500).json({ message: 'Internal server error', error});
   }
 });
 
@@ -185,9 +187,9 @@ const getUserOrders = asyncHandler(async (req, res) => {
   try {  
     const userId = req.user._id;
     const orders = await Order.find({userId});
-    res.status(200).json({message:'orders fetched sucessfully', orders});
+    return res.status(200).json({message:'orders fetched sucessfully', orders});
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error:error});
+    return res.status(500).json({ message: 'Internal server error', error:error});
   }
 });
 
@@ -218,7 +220,7 @@ const changeOrderState = asyncHandler(async (req, res) => {
     }
     return res.status(200).json({order:updatedOrder, orderItems:updatedOrder.items});
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ message: 'Internal server error' });
   }
 });
 

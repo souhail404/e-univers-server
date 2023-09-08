@@ -8,27 +8,12 @@ const {Category , SubCategory} = require('../models/CategoryModel');
 const createCategory = asyncHandler(async(req, res)=>{
     try {
         if(!req.body.title){
-            return res.status(500).json({ message: 'Category Title is required'});
+            return res.status(400).json({ message: 'Category Title is required'});
         }
-        // const {sub_categories} = req.body;
         const category = await Category.create({...req.body});
-        // if the body contains sub categories create them
-        // var addedSubCategories = new Array;
-        // if(sub_categories){
-        //     if(Array.isArray(sub_categories)){
-        //         for (const subCat of sub_categories){
-        //             const subCategory = await SubCategory.create({...subCat, parent:category._id});
-        //             addedSubCategories.push(subCategory)
-        //         }
-        //     }
-        //     else{
-        //         const subCategory = await SubCategory.create({...sub_categories, parent:category._id});
-        //         addedSubCategories.push(subCategory)
-        //     }
-        // }
-        res.status(200).json({message:'created sucessfully', category});
-    } catch (err) {
-        res.status(500).json({ message: 'Server error', error:err });
+        return res.status(200).json({message:'created sucessfully', category});
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal server error', error });
     }
 });
 
@@ -72,9 +57,9 @@ const getAllCategories = asyncHandler(async(req, res)=>{
         const categories = await categoriesQuery.exec();
         const categoriesCount = await Category.countDocuments(query).exec();
         const totalPages = Math.ceil(categoriesCount / pageSizeValue);
-        res.status(200).json({categories, categoriesCount, totalPages});
-    } catch (err) {
-        res.status(500).json({ message: 'Server error'});
+        return res.status(200).json({categories, categoriesCount, totalPages});
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal server error' , error});
     } 
 });
 
@@ -86,9 +71,9 @@ const getCategoryById = asyncHandler(async(req, res)=>{
           return res.status(404).json({ message: 'Category not found' });
         }
         const subCategories = await SubCategory.find({parent:categoryId},{title:1, _id:1})
-        res.json({category , subCategories});
+        return res.status(200).json({category , subCategories});
     } catch (err) {
-        res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Internal server error' });
     }
 });
 
@@ -103,9 +88,9 @@ const updateCategoryById = asyncHandler(async(req, res)=>{
         if (!updatedCategory) {
           return res.status(404).json({ message: 'Category not found' });
         }
-        res.json(updatedCategory);
+        return res.status(200).json(updatedCategory);
     } catch (err) {
-        res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Internal server error' });
     }
 });
 
@@ -124,9 +109,9 @@ const deleteCategoryById = asyncHandler(async(req, res)=>{
         // Then delete the category
         const deletedCategory = await Category.findByIdAndDelete(categoryId);
 
-        res.json({ message: 'Category deleted successfully' });
-    } catch (err) {
-        res.status(500).json({ message: 'Server error' , error:err});
+        return res.status(200).json({ message: 'Category deleted successfully' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal server error' , error});
     }
 });
 

@@ -61,6 +61,10 @@ var orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:"User",
     },
+    user:{
+        fullName:String,
+        mobile:Number,
+    },
     backorderAt:Date,
     deliveredAt:Date,
 }, 

@@ -39,8 +39,8 @@ const addToCart = asyncHandler(async(req, res)=>{
         await product.save();
 
         res.json(user.cart);
-    } catch (err) {
-        res.status(500).json({ message: 'Server error', error:err });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal server error', error});
     }
 });
 
@@ -70,9 +70,9 @@ const reduceCartItemQuantity  = asyncHandler(async(req, res)=>{
     
         await user.save();
 
-        res.json(user.cart);
-    } catch (err) {
-        res.status(500).json({ message: 'Server error' });
+        return res.status(200).json({cart:user.cart});
+    } catch (error) {
+        return res.status(500).json({ message: 'Intrenal server error', error });
     }
 });
 
@@ -90,9 +90,9 @@ const removeFromCart = asyncHandler(async(req, res)=>{
         user.cart = user.cart.filter((el) => el.item.toString() !== productId);
         await user.save();
 
-        res.json(user.cart);
-    } catch (err) {
-        res.status(500).json({ message: 'Server error' });
+        return res.status(200).json({cart:user.cart});
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal server error', error });
     }
 });
 
@@ -110,9 +110,9 @@ const clearCart = asyncHandler(async (req, res) => {
         user.cart = [];
         await user.save();
     
-        res.json(user.cart);
+        return res.status(200).json({cart:user.cart});
     } catch (error) {
-      res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ message: 'Internal server error' });
     }
 });
 

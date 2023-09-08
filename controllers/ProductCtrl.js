@@ -18,16 +18,26 @@ const createProduct = asyncHandler(async(req, res)=>{
             const {path} = file;
             const uploadRes = await uploader(path);
             images.push(uploadRes);
-            console.log(images);
             fs.unlinkSync(path);
         }
 
-        const {title, slug_title, mini_description, description, price, variants} = req.body;
-        const product = await Product.create({...req.body, variants:JSON.parse(variants), images})
+        const {hasVariants} = req.body;
+        var {variants, category , subcategory} = req.body;
+        // if(!category){
+        //     category = null;
+        //     subcategory = null;
+        // };
+        if(hasVariants){
+            variants = [];
+        }
+        else{
+            variants = JSON.parse(variants);
+        }
+        const product = await Product.create({...req.body, variants, images})
         res.status(200).json(product);
     } 
     catch(err){
-        res.status(500).json(err) 
+        return res.status(500).json({message:'Internal server error', error:err}) 
     }
 });
 

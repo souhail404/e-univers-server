@@ -1,7 +1,8 @@
 // import controllers
 const {
     getOverview,
-    getGeneralOverview
+    getGeneralOverview,
+    getAmountComparaisonData
 } = require('../controllers/OverviewCtrl');
 
 const { authMiddleware, isAdmin } = require('../middlewares/authMiddleware');
@@ -13,6 +14,8 @@ const router = express.Router();
 router.get('', authMiddleware, isAdmin, getOverview);
 
 router.get('/general', authMiddleware, isAdmin, getGeneralOverview);
+
+router.get('/amount-chart', authMiddleware, isAdmin, getAmountComparaisonData);
 
 
 module.exports = router;

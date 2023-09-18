@@ -23,10 +23,6 @@ const createProduct = asyncHandler(async(req, res)=>{
 
         const {hasVariants} = req.body;
         var {variants, category , subcategory} = req.body;
-        // if(!category){
-        //     category = null;
-        //     subcategory = null;
-        // };
         if(hasVariants){
             variants = [];
         }
@@ -214,8 +210,7 @@ const updateProduct = asyncHandler(async(req, res)=>{
                 images[i] = newImages.shift();
             }
         }
-            
-        const {title, slugTitle, miniDescription, description, costPrice, variants} = req.body;
+        const { variants} = req.body;
         const product = await Product.findOneAndUpdate({_id:productId}, {...req.body, variants:JSON.parse(variants), images}, {new:true})
         res.status(200).json(product);
     } 

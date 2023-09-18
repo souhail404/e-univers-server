@@ -1,6 +1,7 @@
 // import controllers
 const {
-    getOverview
+    getOverview,
+    getGeneralOverview
 } = require('../controllers/OverviewCtrl');
 
 const { authMiddleware, isAdmin } = require('../middlewares/authMiddleware');
@@ -10,6 +11,8 @@ const router = express.Router();
 
 // GET  OVERVIEW 
 router.get('', authMiddleware, isAdmin, getOverview);
+
+router.get('/general', authMiddleware, isAdmin, getGeneralOverview);
 
 
 module.exports = router;

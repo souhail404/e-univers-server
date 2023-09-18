@@ -6,7 +6,7 @@ const calculateWeekDates = (date) => {
   
     const selectedWeekEnd = new Date(date);
     selectedWeekEnd.setDate(date.getDate() + (6 - currentDay));
-    selectedWeekEnd.setHours(23+2,59,59)
+    selectedWeekEnd.setHours(23+2,59,59)  
   
     const previousWeekStart = new Date(selectedWeekStart);
     previousWeekStart.setDate(selectedWeekStart.getDate() - 7);

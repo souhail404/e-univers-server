@@ -3,6 +3,56 @@ const calculateWeekDates = require('../services/calculateWeekDates');
 const User = require('../models/UserModel');
 const Order = require('../models/OrderModel');
 
+
+const getGeneralOverview = asyncHandler(async (req,  res)=>{
+  try {
+    const { startDate, endDate, range } = req.query;
+
+    if(startDate && endDate){
+      // Get the previous period
+      const prevStart = new Date(startDate)
+      const prevEnd = new Date(endDate)
+      const difDays = Math.ceil((prevEnd - prevStart) /(1000 * 60 * 60 * 24))
+      prevStart.setDate(prevStart.getDate()- difDays)
+      prevStart.toISOString()
+      prevEnd.setDate(prevEnd.getDate()- difDays)
+      prevEnd.toISOString()
+      // Customers
+      var thisPeriodCustomers = await User.countDocuments({
+        createdAt: { $gte: startDate, $lte: endDate },
+        role: 'customer'
+      });
+      var oldPeriodCustomers = await User.countDocuments({
+        createdAt: { $gte: prevStart, $lte: prevEnd },
+        role: 'customer'
+      });
+      // Orders
+      var thisOrders = await Order.find({
+        createdAt: { $gte: startDate, $lte: endDate },
+      });
+      var oldOrders = await Order.find({
+        createdAt: { $gte: prevStart, $lte: prevEnd },
+      });
+      var thisPeriodOrders = 0;
+      var thisPeriodRevenue = 0;
+      for (let index = 0; index < thisOrders.length; index++) {
+        thisPeriodOrders = thisOrders.length
+        thisPeriodRevenue += thisOrders[index].total 
+      }
+      var oldPeriodOrders = 0;
+      var oldPeriodRevenue = 0;
+      for (let index = 0; index < oldOrders.length; index++) {
+        oldPeriodOrders = oldOrders.length
+        oldPeriodRevenue += oldOrders[index].total 
+      }
+    }
+    return res.status(200).json({thisPeriodCustomers, oldPeriodCustomers, thisPeriodOrders, thisPeriodRevenue, oldPeriodOrders, oldPeriodRevenue})
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({message:"Internal server error" , error})
+  }
+});
+
 const getOverview = asyncHandler(async (req,  res)=>{
     try{
       const daysOfWeek = [1, 2, 3, 4, 5, 6, 7]
@@ -95,5 +145,6 @@ const getOverview = asyncHandler(async (req,  res)=>{
 })
 
 module.exports = {
-    getOverview
+    getOverview,
+    getGeneralOverview
 };

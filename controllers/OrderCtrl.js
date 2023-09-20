@@ -121,7 +121,7 @@ const getAllOrders = asyncHandler(async (req, res) => {
     }
 
     // Execute the query to find products
-    let ordersQuery = Order.find(query)
+    var ordersQuery = Order.find(query)
                       .populate({path:'items.itemId', select:'title'})
                       .populate({path:'userId'})
     
@@ -134,11 +134,14 @@ const getAllOrders = asyncHandler(async (req, res) => {
         ordersQuery = ordersQuery.sort(sortOptions);
     }
     // Pagination
-    const DEFAULT_PAGE_SIZE = 10; 
-    const currentPage = parseInt(page) || 1;
-    const pageSizeValue = parseInt(pageSize) || DEFAULT_PAGE_SIZE;
-    const skipItems = (currentPage - 1) * pageSizeValue;
-    ordersQuery = ordersQuery.skip(skipItems).limit(pageSizeValue);
+    if(pageSize!=='unlimited'){
+      const DEFAULT_PAGE_SIZE = 10; 
+      var currentPage = parseInt(page) || 1;
+      var pageSizeValue = parseInt(pageSize) || DEFAULT_PAGE_SIZE;
+      var skipItems = (currentPage - 1) * pageSizeValue;
+      ordersQuery = ordersQuery.skip(skipItems).limit(pageSizeValue);
+    }
+    
 
 
     const orders = await ordersQuery.exec();
@@ -185,9 +188,39 @@ const getOneOrder = asyncHandler(async (req, res) => {
 // get User orders
 const getUserOrders = asyncHandler(async (req, res) => {
   try {  
-    const userId = req.user._id;
-    const orders = await Order.find({userId});
-    return res.status(200).json({message:'orders fetched sucessfully', orders});
+    const {
+      recentlyAdded,
+      orderState,
+      product,
+      user,
+      page,    
+      pageSize,
+    } = req.query;  
+    const { userId } = req.params;
+    const ordersQuery = await Order.find({userId});
+
+    // Pagination
+    const DEFAULT_PAGE_SIZE = 10; 
+    const currentPage = parseInt(page) || 1;
+    const pageSizeValue = parseInt(pageSize) || DEFAULT_PAGE_SIZE;
+    const skipItems = (currentPage - 1) * pageSizeValue;
+    ordersQuery = ordersQuery.skip(skipItems).limit(pageSizeValue);
+
+
+    const orders = await ordersQuery.exec();
+    
+    const totalOrdersCount = await Order.countDocuments(query).exec();
+
+    const totalPages = Math.ceil(totalOrdersCount / pageSizeValue);
+
+    return res.status(200).json({
+      message:'orders fetched sucessfully', 
+      totalOrders: totalOrdersCount,
+      totalPages: totalPages,
+      currentPage: currentPage, 
+      pageSize: pageSizeValue,
+      orders
+    });
   } catch (error) {
     return res.status(500).json({ message: 'Internal server error', error:error});
   }

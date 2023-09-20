@@ -25,7 +25,7 @@ router.get('/all', authMiddleware, isAdmin, getAllOrders);
 router.get('/one/:orderId', authMiddleware, isAdmin, getOneOrder);
 
 // GET USER ORDERS STATE 
-router.get('/user', authMiddleware, getUserOrders);
+router.get('/user/:userId', authMiddleware, getUserOrders); 
 
 
 

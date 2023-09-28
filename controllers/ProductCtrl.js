@@ -172,7 +172,7 @@ const getProduct = asyncHandler(async(req, res)=>{
     if(!productId){
         throw Error('you must pass the product id in the url')
     }
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId).populate('category').populate('subcategory').exec();
     if(!product){
         throw Error('products not found')
     }

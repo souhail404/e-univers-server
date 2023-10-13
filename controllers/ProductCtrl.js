@@ -185,7 +185,6 @@ const updateProduct = asyncHandler(async(req, res)=>{
     try{
         const deletedImages = JSON.parse(req.body.deletedImages);
         if (deletedImages && deletedImages.length > 0) {
-            console.log(deletedImages);
             for (const image of deletedImages) {
               if(image.publicId){
                 await deleteImage(image.publicId);

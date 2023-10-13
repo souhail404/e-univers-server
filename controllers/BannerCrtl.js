@@ -17,7 +17,6 @@ const createBanner = asyncHandler(async(req, res)=>{
         const desktopBannerData = await uploader(desktopBanner[0].path);
         const mobileBannerData = await uploader(mobileBanner[0].path);
         
-        console.log(desktopBannerData);
         if (!desktopBannerData || !mobileBannerData) {
             return res.status(400).json({message:'error while uploading Banners, please try again or check network'})
         }   

@@ -57,7 +57,6 @@ const getGeneralOverview = asyncHandler(async (req,  res)=>{
     }
     return res.status(200).json({thisPeriodCustomers, oldPeriodCustomers, thisPeriodOrders, thisPeriodRevenue, oldPeriodOrders, oldPeriodRevenue, thisPeriodReturns, oldPeriodReturns})
   } catch (error) {
-    console.log(error);
     return res.status(500).json({message:"Internal server error" , error})
   }
 });
@@ -72,7 +71,6 @@ const getAmountComparaisonData = asyncHandler(async (req,  res)=>{
     const promiseArray = dividedPeriod.map(async (period, i) => {
       const start = period.currentDayStart;
       const end = period.currentDayEnd;
-      console.log(end);
       const slice = await Order.find({
         createdAt: { $gte: start, $lte: end },
         orderState: { $ne: "backorder" },

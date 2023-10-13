@@ -38,7 +38,6 @@ function dividePeriodIntoDays(startdate, enddate) {
             startDateObj = new Date(endDateObj.getTime() - 7 * oneDay)
         }
         
-        console.log(numberOfDays);
       for (let i = 0; i < numberOfDays; i++) {
         var currentDayStart = new Date(startDateObj.getTime() + i * oneDay);
         var currentDayEnd = new Date(startDateObj.getTime() + i * oneDay);

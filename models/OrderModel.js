@@ -42,13 +42,13 @@ var orderSchema = new mongoose.Schema({
                 type:String,
             },
             zip:{
-                type:Number,
+                type:String,
             },
             street:{
                 type:String,
             },
             houseNumber:{
-                type:Number,
+                type:String,
             } 
     },
     orderState:{

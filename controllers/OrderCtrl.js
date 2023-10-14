@@ -10,8 +10,13 @@ const calculateWeekDates = require('../services/calculateWeekDates');
 // Create an order for a user
 const createOrder = asyncHandler(async (req, res) => {
   try {  
-    const userId = req.user._id;
+
+    var userId = req.user._id;
     const { items, shippingAddress } = req.body;
+
+    if(req.body.userId && req.user.role === 'admin'){
+      userId = req.body.userId;
+    }
 
     const user = await User.findById(userId);
 
@@ -64,7 +69,7 @@ const createOrder = asyncHandler(async (req, res) => {
             itemPrice:item.itemPrice,
             itemTotalPrice:item.itemTotalPrice
         });
-        const userInfos = {fullName:`${user.lastName} ${user.firstName}` , mobile:`${user.mobile}`}
+        var userInfos = {fullName:`${user.lastName} ${user.firstName}` , mobile:`${user.mobile}`}
 
         // increment the ordred counter and save it
         const ordered = product.ordered + 1; 
@@ -80,6 +85,7 @@ const createOrder = asyncHandler(async (req, res) => {
     
     return res.status(200).json({message:'order created successfully', order:newOrder});
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: 'Internal server error', error});
   }
 }); 

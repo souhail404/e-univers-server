@@ -25,7 +25,7 @@ const MONGO_DB = process.env.MONGO_DB;
 // middlewares
 app.use(cors(
     {
-        origin:"https://e-dashboard-mu.vercel.app"
+        origin:"https://e-dashboard-mu.vercel.app/login"
     }
 ));
 app.use(express.json());

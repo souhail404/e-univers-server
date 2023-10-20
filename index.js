@@ -23,13 +23,7 @@ const PORT = process.env.PORT || 4000;
 const MONGO_DB = process.env.MONGO_DB;
 
 // middlewares
-app.use(cors(
-    {
-        origin:["https://e-dashboard-mu.vercel.app"],
-        methods:['POST','GET','DELETE','PUT'],
-        credentials:true
-    }
-));
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
